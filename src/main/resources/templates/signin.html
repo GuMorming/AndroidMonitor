@@ -1,0 +1,45 @@
+{% extends "_base" %}
+
+{% block main %}
+
+<form method="post" action="/signin">
+    <h3>Sign In</h3>
+
+    {% if error != null %}
+    <div class="form-group">
+        <p id="error" class="text-danger">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+        <label>邮箱</label>
+        <input name="email" type="email" class="form-control" placeholder="Email" value="{{ email }}">
+    </div>
+    <div class="form-group">
+        <label>密码</label>
+        <input name="password" type="password" class="form-control" placeholder="Password">
+    </div>
+    <div class="form-group">
+        <fieldset>
+            <p>身份选择:</p>
+            <div>
+                <input name="role" type="radio" id="Monitor" checked>
+                <label for="Monitor">监控端</label>
+            </div>
+            <div>
+                <input name="role" type="radio" id="Client">
+                <label for="Client">被控端</label>
+            </div>
+        </fieldset>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-outline-primary">登录</button>
+    </div>
+
+    <div class="form-group">
+        <a href="/register">Don't have an account?</a>
+    </div>
+
+</form>
+
+{% endblock %}

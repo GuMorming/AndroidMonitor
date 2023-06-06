@@ -1,0 +1,41 @@
+2023-06-06T18:19:58.754+08:00  INFO 19604 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 19604 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-06T18:19:58.757+08:00  INFO 19604 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-06T18:19:58.797+08:00  INFO 19604 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-06-06T18:19:58.797+08:00  INFO 19604 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-06-06T18:19:59.495+08:00  INFO 19604 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-06T18:19:59.502+08:00  INFO 19604 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-06T18:19:59.503+08:00  INFO 19604 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-06T18:19:59.544+08:00  INFO 19604 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-06T18:19:59.545+08:00  INFO 19604 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 747 ms
+2023-06-06T18:19:59.758+08:00  INFO 19604 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-06T18:19:59.877+08:00  INFO 19604 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-06T18:19:59.907+08:00  INFO 19604 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-06T18:19:59.908+08:00  INFO 19604 --- [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2023-06-06T18:19:59.909+08:00  INFO 19604 --- [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@19cfcd7e]]
+2023-06-06T18:19:59.909+08:00  INFO 19604 --- [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2023-06-06T18:19:59.916+08:00  INFO 19604 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 1.657 seconds (process running for 2.151)
+2023-06-06T18:20:09.584+08:00  INFO 19604 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-06T18:20:09.585+08:00  INFO 19604 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-06T18:20:09.586+08:00  INFO 19604 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2023-06-06T18:20:57.946+08:00  INFO 19604 --- [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2023-06-06T18:20:57.946+08:00  INFO 19604 --- [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@19cfcd7e]]
+2023-06-06T18:20:57.946+08:00  INFO 19604 --- [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2023-06-06T18:24:48.389+08:00  INFO 12520 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 12520 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-06T18:24:48.392+08:00  INFO 12520 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-06T18:24:48.426+08:00  INFO 12520 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-06-06T18:24:48.426+08:00  INFO 12520 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-06-06T18:24:49.149+08:00  INFO 12520 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-06T18:24:49.157+08:00  INFO 12520 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-06T18:24:49.157+08:00  INFO 12520 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-06T18:24:49.202+08:00  INFO 12520 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-06T18:24:49.202+08:00  INFO 12520 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 775 ms
+2023-06-06T18:24:49.433+08:00  INFO 12520 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-06T18:24:49.550+08:00  INFO 12520 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-06T18:24:49.580+08:00  INFO 12520 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-06T18:24:49.581+08:00  INFO 12520 --- [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2023-06-06T18:24:49.582+08:00  INFO 12520 --- [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@31b87ddc]]
+2023-06-06T18:24:49.582+08:00  INFO 12520 --- [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2023-06-06T18:24:49.588+08:00  INFO 12520 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 1.579 seconds (process running for 2.089)
+2023-06-06T18:24:50.636+08:00  INFO 12520 --- [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2023-06-06T18:24:50.636+08:00  INFO 12520 --- [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@31b87ddc]]
+2023-06-06T18:24:50.636+08:00  INFO 12520 --- [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
