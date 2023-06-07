@@ -20,7 +20,16 @@ public class WsController {
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public Greeting greeting(HelloMessage message) throws InterruptedException {
+//        System.out.println("React to hello");
 //        Thread.sleep(400);
         return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
     }
+    
+    @MessageMapping("/hello-msg-mapping")
+    @SendTo("/topic/greetings")
+    public Greeting echoMessageMapping(String message) {
+//        System.out.println("React to hello-msg-mapping");
+        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message) + "!");
+    }
+    
 }
