@@ -18,6 +18,8 @@ public class MessageKey {
     public static final String COMMAND_PROCESS_INFO = "processInfo";
     // 发送屏幕截图命令
     public static final String COMMAND_SCREENSHOT = "screenshot";
+    public static final String COMMAND_SCREENSHOT_STOP = "screenshot_stop";
+    
     // keywords
     public static final String KEY_COMMAND = "command";
     public static final String KEY_POOL_NAME = "poolName";

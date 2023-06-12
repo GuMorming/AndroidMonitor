@@ -5,6 +5,7 @@
     let ws;
     let SocketCreated = false;
     let isMonitorLoggedOut = false;
+    let isScreenShot = false;
     const poolName = "monitor"; // 连接池名称
     let username;
 
@@ -20,7 +21,10 @@
         lock.className = 'LockOff';
     }
 
-    function ToggleConnectionClicked() {
+    /**
+     * 连接webSocket与断开
+     */
+    function toggleConnectionClicked() {
         if (SocketCreated && (ws.readyState === 0 || ws.readyState === 1)) {
             lockOn("离开聊天室...");
             SocketCreated = false;
@@ -31,11 +35,7 @@
             });
             ws.send(msg);
             ws.close();
-        }
-            // else if (document.getElementById("poolName").value === "请输入房间号!") {
-            //     Log("请输入房间号！");
-        // }
-        else {
+        } else {
             lockOn("进入聊天室...");
             Log("准备连接到聊天服务器 ...");
 
@@ -54,7 +54,7 @@
                 Log(ex, "ERROR");
                 return;
             }
-            document.getElementById("ToggleConnection").innerHTML = "退出房间";
+            document.getElementById("toggleConnectionBtn").innerHTML = "断开";
             ws.onopen = WSonOpen;
             ws.onmessage = WSonMessage;
             ws.onclose = WSonClose;
@@ -62,24 +62,58 @@
         }
     }
 
+    function toggleScreenshot() {
+        if (isScreenShot) {
+            var msg = JSON.stringify({
+                'command': 'screenshot_stop',
+                'poolName': poolName,
+                'username': username,
+                'data': 'Stop Monitoring'
+            });
+            ws.send(msg);
+            isScreenShot = false;
+            document.getElementById("toggleScreenshotBtn").innerHTML = "屏幕监控";
+        } else {
+            const msg = JSON.stringify({
+                'command': 'screenshot'
+                , 'poolName': poolName
+                , 'username': username
+                , 'data': "Start Monitoring"
+            })
+            ws.send(msg);
+            isScreenShot = true;
+            document.getElementById("toggleScreenshotBtn").innerHTML = "停止监控";
+        }
+    }
+
+    function Greeting() {
+        const msg = JSON.stringify({
+            'command': 'greeting'
+            , 'poolName': poolName
+            , 'username': username
+            , 'data': "This is monitor,Hi!"
+        })
+        ws.send(msg);
+    }
+
 
     function WSonOpen() {
         lockOff();
         Log("连接已经建立。", "OK");
-        $("#SendDataContainer").show();
-        const msg = JSON.stringify({
-            'command': 'broadcast', 'poolName': poolName, 'username': "all",
-            'data': username + "加入聊天室"
-        });
-        ws.send(msg);
+        // $("#SendDataContainer").show();
+        // const msg = JSON.stringify({
+        //     'command': 'broadcast', 'poolName': poolName, 'username': "all",
+        //     'data': username + "加入聊天室"
+        // });
+        // ws.send(msg);
     }
 
     function WSonMessage(event) {
         let data = event.data;
         let message = JSON.parse(data);
-        Log(message, "INFO");
+        // Log(message, "INFO");
         let command = message.command;
-        Log(command, "INFO");
+        // Log(command, "INFO");
         switch (command) {
             case "screenshot":
                 url = "data:image/png;base64," + message.data;
@@ -95,31 +129,14 @@
         lockOff();
         if (isMonitorLoggedOut)
             Log("您已离开了房间！", "INFO");
-        document.getElementById("ToggleConnection").innerHTML = "连接";
+        document.getElementById("toggleConnectionBtn").innerHTML = "连接";
+        $("#toggleScreenshotBtn").innerHTML = "监控桌面"
         $("#SendDataContainer").hide();
     }
 
     function WSonError() {
         lockOff();
         Log("远程连接中断。", "ERROR");
-    }
-
-    function Greeting() {
-        const msg = JSON.stringify({
-            'command': 'greeting'
-            , 'poolName': poolName
-            , 'username': username
-            , 'data': "This is monitor,Hi!"
-        })
-        ws.send(msg);
-        // if (document.getElementById("DataToSend").value.trim() !== "") {
-        //     const msg = JSON.stringify({
-        //         'command': 'message', 'poolName': poolName, 'username': document.getElementById("DataToSendWho").value,
-        //         'info': document.getElementById("DataToSend").value
-        //     });
-        //     ws.send(msg);
-        //     document.getElementById("DataToSend").value = "";
-        // }
     }
 
 
@@ -145,7 +162,6 @@
                 WebSocketsExist = false;
             }
         }
-
         if (WebSocketsExist) {
             Log("您的浏览器支持WebSocket. 您可以尝试连接到聊天服务器!", "OK");
             // document.getElementById("roomId").value = "请输入房间号!";
@@ -175,7 +191,8 @@
     <!--    </div>-->
     <!--    房间号: <input type="text" id="roomId"/> -->
     用户名： <input type="text" id="txtName" value="web-monitor"/>
-    <button id='ToggleConnection' type="button" onclick='ToggleConnectionClicked();'>进入房间</button>
+    <button id='toggleConnectionBtn' type="button" onclick='toggleConnectionClicked();'>连接</button>
+    <button id="toggleScreenshotBtn" type="button" onclick="toggleScreenshot();">监控</button>
     <div>
         <img id="img" src="data:image/png;base64,base64代码">
     </div>

@@ -28,7 +28,7 @@ import static cn.edu.whut.androidmonitor.constants.POOL.POOL_NAME_Monitor;
  * @Package : cn.edu.whut.androidmonitor.websocket
  * @createTime : 2023/6/11 11:00
  * @Email : gumorming@163.com
- * @Description :
+ * @Description : WebSocket事件处理器
  */
 
 /**
@@ -83,7 +83,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                     }
                     System.out.println("当前被控端个数：" + poolSessionMap.size());
                 }
-                System.out.println(session.getUri());
+                System.out.println("URI:" + session.getUri());
             }
         }
     }
@@ -109,7 +109,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             if (command != null) {
                 switch (command) {
                     // 问候消息
-                    case COMMAND_GREETING -> System.out.println("Client-" + username + "发送:" + message.getData());
+                    case COMMAND_GREETING -> System.out.println("Client-" + username + ":" + message.getData());
                     // 截图数据
                     case COMMAND_SCREENSHOT -> {
                         Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_Monitor);
@@ -135,20 +135,63 @@ public class WebSocketHandler extends TextWebSocketHandler {
             JSONObject jsonobject = new JSONObject(webSocketMessage.getPayload().toString());
             MonitorMessage message = new MonitorMessage(jsonobject.toString());
             System.out.println(jsonobject);
-            System.out.println(message.getData() + ":来自" + message.getUsername() + "的消息");
+            System.out.println("Monitor-" + message.getUsername() + ":" + message.getData());
             if (message.getUsername() != null && message.getCommand() != null) {
                 switch (message.getCommand()) {
                     case COMMAND_GREETING:
                         sendGreetingToClients(message);
                         break;
-                    
+                    case COMMAND_SCREENSHOT:
+                        startMonitoring(message);
+                        break;
+                    case COMMAND_SCREENSHOT_STOP:
+                        stopMonitoring(message);
+                        break;
                     default:
                         break;
                 }
             }
         }
         
-        session.sendMessage(new TextMessage("server 发送: " + LocalDateTime.now()));
+        session.sendMessage(new TextMessage("server: " + LocalDateTime.now()));
+    }
+    
+    /**
+     * Web-Monitor向Android-Client发送截图命令
+     *
+     * @param message
+     * @throws IOException
+     * @attention: 目前为遍历发送, 后期应更正为点对点
+     */
+    public void startMonitoring(MonitorMessage message) throws IOException {
+        Map<String, WebSocketSession> clientSessionMap = wsSessionMap.get(POOL_NAME_CLIENT);
+        if (clientSessionMap == null) {
+            System.out.println("暂无被控端在线!");
+        } else {
+            for (Map.Entry<String, WebSocketSession> entry : clientSessionMap.entrySet()) {
+                WebSocketSession session = entry.getValue();
+                session.sendMessage(new TextMessage(message.toJson().toString()));
+            }
+        }
+    }
+    
+    /**
+     * Web-Monitor向Android-Client发送截图命令
+     *
+     * @param message
+     * @throws IOException
+     * @attention: 目前为遍历发送, 后期应更正为点对点
+     */
+    public void stopMonitoring(MonitorMessage message) throws IOException {
+        Map<String, WebSocketSession> clientSessionMap = wsSessionMap.get(POOL_NAME_CLIENT);
+        if (clientSessionMap == null) {
+            System.out.println("暂无被控端在线!");
+        } else {
+            for (Map.Entry<String, WebSocketSession> entry : clientSessionMap.entrySet()) {
+                WebSocketSession session = entry.getValue();
+                session.sendMessage(new TextMessage(message.toJson().toString()));
+            }
+        }
     }
     
     /**
@@ -213,20 +256,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private String getUsernameFromSessionHeaders(HttpHeaders headers) {
         try {
             return headers.getFirst(KEY_USERNAME);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    
-    /**
-     * 仅Android-Client, 从sessionHeader中获取Command命令
-     *
-     * @param headers
-     * @return String command
-     */
-    private String getCommandFromSessionHeaders(HttpHeaders headers) {
-        try {
-            return headers.getFirst(KEY_COMMAND);
         } catch (Exception e) {
             return null;
         }

@@ -4389,3 +4389,191 @@ java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because "p
 2023-06-12T17:49:39.634+08:00  INFO 9368 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2023-06-12T17:49:39.634+08:00  INFO 9368 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2023-06-12T17:49:39.635+08:00  INFO 9368 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-12T20:23:17.129+08:00  INFO 19572 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 19572 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-12T20:23:17.132+08:00  INFO 19572 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-12T20:23:17.172+08:00  INFO 19572 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-06-12T20:23:17.173+08:00  INFO 19572 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-06-12T20:23:18.198+08:00  INFO 19572 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-12T20:23:18.211+08:00  INFO 19572 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-12T20:23:18.212+08:00  INFO 19572 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-12T20:23:18.272+08:00  INFO 19572 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-12T20:23:18.272+08:00  INFO 19572 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1099 ms
+2023-06-12T20:23:18.523+08:00  INFO 19572 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-12T20:23:18.697+08:00  INFO 19572 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-12T20:23:18.751+08:00  INFO 19572 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-12T20:23:18.762+08:00  INFO 19572 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 2.125 seconds (process running for 2.802)
+2023-06-12T20:23:23.842+08:00  INFO 19572 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-12T20:23:23.842+08:00  INFO 19572 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-12T20:23:23.843+08:00  INFO 19572 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-12T20:30:04.482+08:00  INFO 15624 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 15624 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-12T20:30:04.484+08:00  INFO 15624 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-12T20:30:04.523+08:00  INFO 15624 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-06-12T20:30:04.524+08:00  INFO 15624 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-06-12T20:30:05.250+08:00  INFO 15624 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-12T20:30:05.257+08:00  INFO 15624 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-12T20:30:05.258+08:00  INFO 15624 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-12T20:30:05.300+08:00  INFO 15624 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-12T20:30:05.301+08:00  INFO 15624 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 776 ms
+2023-06-12T20:30:05.486+08:00  INFO 15624 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-12T20:30:05.620+08:00  INFO 15624 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-12T20:30:05.652+08:00  INFO 15624 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-12T20:30:05.659+08:00  INFO 15624 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 1.582 seconds (process running for 2.1)
+2023-06-12T20:30:08.912+08:00  INFO 15624 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-12T20:30:08.913+08:00  INFO 15624 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-12T20:30:08.914+08:00  INFO 15624 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-12T20:34:06.121+08:00  INFO 7376 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 7376 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-12T20:34:06.123+08:00  INFO 7376 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-12T20:34:06.163+08:00  INFO 7376 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-06-12T20:34:06.163+08:00  INFO 7376 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-06-12T20:34:06.890+08:00  INFO 7376 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-12T20:34:06.899+08:00  INFO 7376 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-12T20:34:06.899+08:00  INFO 7376 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-12T20:34:06.942+08:00  INFO 7376 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-12T20:34:06.943+08:00  INFO 7376 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 780 ms
+2023-06-12T20:34:07.130+08:00  INFO 7376 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-12T20:34:07.262+08:00  INFO 7376 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-12T20:34:07.292+08:00  INFO 7376 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-12T20:34:07.299+08:00  INFO 7376 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 1.592 seconds (process running for 2.114)
+2023-06-12T20:34:09.725+08:00  INFO 7376 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-12T20:34:09.725+08:00  INFO 7376 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-12T20:34:09.726+08:00  INFO 7376 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-12T20:35:47.118+08:00 ERROR 7376 --- [http-nio-8080-exec-7] w.s.h.ExceptionWebSocketHandlerDecorator : Closing session due to exception for StandardWebSocketSession[id=dce7ea8d-c22f-0b02-5970-f5467786d663, uri=ws://localhost:8080/app-websocket/INFO=%7B%22command%22:%22connect%22,%22username%22:%22web-monitor%22,%22poolName%22:%22monitor%22%7D]
+
+java.lang.IllegalStateException: The WebSocket session [1] has been closed and no method (apart from close()) may be called on a closed session
+	at org.apache.tomcat.websocket.WsSession.checkState(WsSession.java:974)
+	at org.apache.tomcat.websocket.WsSession.getBasicRemote(WsSession.java:529)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketSession.sendTextMessage(StandardWebSocketSession.java:215)
+	at org.springframework.web.socket.adapter.AbstractWebSocketSession.sendMessage(AbstractWebSocketSession.java:108)
+	at cn.edu.whut.androidmonitor.websocket.WebSocketHandler.stopMonitoring(WebSocketHandler.java:192)
+	at cn.edu.whut.androidmonitor.websocket.WebSocketHandler.handleMessage(WebSocketHandler.java:148)
+	at org.springframework.web.socket.handler.WebSocketHandlerDecorator.handleMessage(WebSocketHandlerDecorator.java:75)
+	at org.springframework.web.socket.handler.LoggingWebSocketHandlerDecorator.handleMessage(LoggingWebSocketHandlerDecorator.java:56)
+	at org.springframework.web.socket.handler.ExceptionWebSocketHandlerDecorator.handleMessage(ExceptionWebSocketHandlerDecorator.java:58)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.handleTextMessage(StandardWebSocketHandlerAdapter.java:113)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:84)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:81)
+	at org.apache.tomcat.websocket.WsFrameBase.sendMessageText(WsFrameBase.java:390)
+	at org.apache.tomcat.websocket.server.WsFrameServer.sendMessageText(WsFrameServer.java:129)
+	at org.apache.tomcat.websocket.WsFrameBase.processDataText(WsFrameBase.java:484)
+	at org.apache.tomcat.websocket.WsFrameBase.processData(WsFrameBase.java:284)
+	at org.apache.tomcat.websocket.WsFrameBase.processInputBuffer(WsFrameBase.java:130)
+	at org.apache.tomcat.websocket.server.WsFrameServer.onDataAvailable(WsFrameServer.java:84)
+	at org.apache.tomcat.websocket.server.WsFrameServer.doOnDataAvailable(WsFrameServer.java:183)
+	at org.apache.tomcat.websocket.server.WsFrameServer.notifyDataAvailable(WsFrameServer.java:163)
+	at org.apache.tomcat.websocket.server.WsHttpUpgradeHandler.upgradeDispatch(WsHttpUpgradeHandler.java:152)
+	at org.apache.coyote.http11.upgrade.UpgradeProcessorInternal.dispatch(UpgradeProcessorInternal.java:60)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:57)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:894)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+
+2023-06-12T20:37:19.430+08:00  INFO 15468 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 15468 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-12T20:37:19.432+08:00  INFO 15468 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-12T20:37:19.470+08:00  INFO 15468 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-06-12T20:37:19.470+08:00  INFO 15468 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-06-12T20:37:20.199+08:00  INFO 15468 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-12T20:37:20.209+08:00  INFO 15468 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-12T20:37:20.209+08:00  INFO 15468 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-12T20:37:20.255+08:00  INFO 15468 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-12T20:37:20.255+08:00  INFO 15468 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 784 ms
+2023-06-12T20:37:20.460+08:00  INFO 15468 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-12T20:37:20.618+08:00  INFO 15468 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-12T20:37:20.649+08:00  INFO 15468 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-12T20:37:20.656+08:00  INFO 15468 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 1.655 seconds (process running for 2.183)
+2023-06-12T20:38:36.370+08:00  INFO 20040 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 20040 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-12T20:38:36.374+08:00  INFO 20040 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-12T20:38:36.413+08:00  INFO 20040 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-06-12T20:38:36.413+08:00  INFO 20040 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-06-12T20:38:37.161+08:00  INFO 20040 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-12T20:38:37.168+08:00  INFO 20040 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-12T20:38:37.169+08:00  INFO 20040 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-12T20:38:37.216+08:00  INFO 20040 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-12T20:38:37.216+08:00  INFO 20040 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 803 ms
+2023-06-12T20:38:37.406+08:00  INFO 20040 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-12T20:38:37.540+08:00  INFO 20040 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-12T20:38:37.573+08:00  INFO 20040 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-12T20:38:37.582+08:00  INFO 20040 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 1.642 seconds (process running for 2.184)
+2023-06-12T20:38:40.273+08:00  INFO 20040 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-12T20:38:40.273+08:00  INFO 20040 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-12T20:38:40.274+08:00  INFO 20040 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-12T20:39:24.580+08:00  INFO 14672 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 14672 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-12T20:39:24.583+08:00  INFO 14672 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-12T20:39:24.620+08:00  INFO 14672 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-06-12T20:39:24.620+08:00  INFO 14672 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-06-12T20:39:25.420+08:00  INFO 14672 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-12T20:39:25.428+08:00  INFO 14672 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-12T20:39:25.428+08:00  INFO 14672 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-12T20:39:25.476+08:00  INFO 14672 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-12T20:39:25.477+08:00  INFO 14672 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 855 ms
+2023-06-12T20:39:25.657+08:00  INFO 14672 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-12T20:39:25.789+08:00  INFO 14672 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-12T20:39:25.823+08:00  INFO 14672 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-12T20:39:25.830+08:00  INFO 14672 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 1.668 seconds (process running for 2.192)
+2023-06-12T20:39:27.947+08:00  INFO 14672 --- [http-nio-8080-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-12T20:39:27.947+08:00  INFO 14672 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-12T20:39:27.948+08:00  INFO 14672 --- [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-12T20:42:38.823+08:00  INFO 16436 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 16436 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-12T20:42:38.825+08:00  INFO 16436 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-12T20:42:38.865+08:00  INFO 16436 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-06-12T20:42:38.865+08:00  INFO 16436 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-06-12T20:42:39.634+08:00  INFO 16436 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-12T20:42:39.641+08:00  INFO 16436 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-12T20:42:39.642+08:00  INFO 16436 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-12T20:42:39.690+08:00  INFO 16436 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-12T20:42:39.690+08:00  INFO 16436 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 825 ms
+2023-06-12T20:42:39.890+08:00  INFO 16436 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-12T20:42:40.040+08:00  INFO 16436 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-12T20:42:40.081+08:00  INFO 16436 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-12T20:42:40.090+08:00  INFO 16436 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 1.721 seconds (process running for 2.418)
+2023-06-12T20:42:47.550+08:00  INFO 16436 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-06-12T20:42:47.550+08:00  INFO 16436 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-06-12T20:42:47.551+08:00  INFO 16436 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-06-12T20:50:15.591+08:00  INFO 16436 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2023-06-12T20:50:15.605+08:00  INFO 16436 --- [Thread-5] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2023-06-12T20:50:15.606+08:00  INFO 16436 --- [Thread-5] o.a.c.c.C.[Tomcat].[localhost].[/]       : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-06-12T20:50:15.723+08:00  INFO 16436 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 16436 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-12T20:50:15.723+08:00  INFO 16436 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-12T20:50:16.025+08:00  INFO 16436 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-12T20:50:16.026+08:00  INFO 16436 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-12T20:50:16.027+08:00  INFO 16436 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-12T20:50:16.042+08:00  INFO 16436 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-06-12T20:50:16.042+08:00  INFO 16436 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 315 ms
+2023-06-12T20:50:16.059+08:00  WARN 16436 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'webSocketConfig': Unsatisfied dependency expressed through field 'handler': No qualifying bean of type 'cn.edu.whut.androidmonitor.websocket.WebSocketHandler' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2023-06-12T20:50:16.060+08:00  INFO 16436 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2023-06-12T20:50:16.068+08:00  INFO 16436 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2023-06-12T20:50:16.101+08:00 ERROR 16436 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field handler in cn.edu.whut.androidmonitor.websocket.WebSocketConfig required a bean of type 'cn.edu.whut.androidmonitor.websocket.WebSocketHandler' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'cn.edu.whut.androidmonitor.websocket.WebSocketHandler' in your configuration.
+
+2023-06-12T20:50:17.570+08:00  INFO 16436 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Starting AndroidMonitorApplication using Java 17.0.1 with PID 16436 (E:\IDEA Documents\AndroidMonitor\target\classes started by GuMorming in E:\IDEA Documents\AndroidMonitor)
+2023-06-12T20:50:17.570+08:00  INFO 16436 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : No active profile set, falling back to 1 default profile: "default"
+2023-06-12T20:50:17.695+08:00  INFO 16436 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-06-12T20:50:17.697+08:00  INFO 16436 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-06-12T20:50:17.697+08:00  INFO 16436 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.8]
+2023-06-12T20:50:17.706+08:00  INFO 16436 --- [restartedMain] o.a.c.c.C.[Tomcat-1].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2023-06-12T20:50:17.706+08:00  INFO 16436 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 134 ms
+2023-06-12T20:50:17.746+08:00  INFO 16436 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-06-12T20:50:17.773+08:00  INFO 16436 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-06-12T20:50:17.785+08:00  INFO 16436 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-06-12T20:50:17.788+08:00  INFO 16436 --- [restartedMain] c.e.w.a.AndroidMonitorApplication        : Started AndroidMonitorApplication in 0.242 seconds (process running for 460.116)
+2023-06-12T20:50:17.789+08:00  INFO 16436 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
