@@ -21,9 +21,7 @@ public class AndroidMonitorApplication {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
                 registry.addViewController("/").setViewName("index");
-                registry.addViewController("/ws").setViewName("wsdemo");
-                registry.addViewController("/wstest").setViewName("wstest");
-                
+                registry.addViewController("/ws").setViewName("wstest");
             }
             
             @Override
@@ -31,6 +29,8 @@ public class AndroidMonitorApplication {
                 // 映射路径 '/static/'到classpath路径 :
                 registry.addResourceHandler("/static/**")
                         .addResourceLocations("classpath:/static/");
+                registry.addResourceHandler("/dist/**")
+                        .addResourceLocations("classpath:/dist/");
             }
         };
     }

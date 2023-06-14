@@ -19,17 +19,15 @@ import java.util.Map;
  */
 
 /**
- * 用来拦截客户端第一次连接服务端时的请求，
- * 即客户端连接/webSocket/{INFO}时，
- * 可以获取到对应INFO的信息
+ * 用来拦截客户端第一次连接服务端时的请求,即握手前后
  */
 @Component
 public class WebSocketInterceptor implements HandshakeInterceptor {
     
     /**
-     * 握手前
+     * 握手前, 为每个session分配一个uid
      *
-     * @param request
+     * @param serverHttpRequest
      * @param response
      * @param wsHandler
      * @param attributes
@@ -37,35 +35,16 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
      * @throws Exception
      */
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+    public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) {
         System.out.println("握手开始");
-        // 获得请求参数
-//        Map<String, String> paramMap = HttpUtil.decodeParamMap(request.getURI().getQuery(), CharsetUtil.CHARSET_UTF_8);
-//        String uid = paramMap.get("token");
-//        if (StrUtil.isNotBlank(uid)) {
-//            // 放入属性域
-//            attributes.put("token", uid);
-//            System.out.println("用户 token " + uid + " 握手成功！");
-//            return true;
+//        if (serverHttpRequest instanceof ServletServerHttpRequest) {
+//            ServletServerHttpRequest request = (ServletServerHttpRequest) serverHttpRequest;
+//            HttpSession session = request.getServletRequest().getSession();
+//            // 以当前系统时间作为session的uid
+//            String uid = new SimpleDateFormat("yyyyMMddHHmmssSSSS").format(System.currentTimeMillis());
+//            System.out.println(uid);
+//            session.setAttribute(KEY_UID, uid);
 //        }
-//        System.out.println("用户登录已失效");
-
-//        if (request instanceof ServletServerHttpRequest) {
-//            String INFO = request.getURI().getPath().split("INFO=")[1];
-//            if (INFO != null && INFO.length() > 0) {
-//                JSONObject jsonObject = new JSONObject(INFO);
-//                String command = jsonObject.getString("command");
-//                if (command != null && MessageKey.ENTER_COMMAND.equals(command)) {
-//                    System.out.println("当前session的ID=" + jsonObject.getString("name"));
-//                    ServletServerHttpRequest request = (ServletServerHttpRequest) serverHttpRequest;
-//                    HttpSession session = request.getServletRequest().getSession();
-//                    map.put(MessageKey.KEY_WEBSOCKET_USERNAME, jsonObject.getString("name"));
-//                    map.put(MessageKey.KEY_ROOM_ID, jsonObject.getString("roomId"));
-//                }
-//            }
-//        }
-        
-        
         return true;
     }
     

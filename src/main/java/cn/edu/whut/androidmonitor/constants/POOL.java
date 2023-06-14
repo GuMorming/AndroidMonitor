@@ -11,5 +11,5 @@ package cn.edu.whut.androidmonitor.constants;
 
 public class POOL {
     public static final String POOL_NAME_CLIENT = "client";
-    public static final String POOL_NAME_Monitor = "monitor";
+    public static final String POOL_NAME_MONITOR = "monitor";
 }

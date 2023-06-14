@@ -37,7 +37,7 @@ public class ClientMessage {
         } catch (JSONException e) {
             return null;
         }
-        
+    
     }
     
     
@@ -47,5 +47,9 @@ public class ClientMessage {
     
     public String getData() {
         return data;
+    }
+    
+    public void setData(String data) {
+        this.data = data;
     }
 }

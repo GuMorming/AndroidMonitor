@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static cn.edu.whut.androidmonitor.constants.MessageKey.*;
 import static cn.edu.whut.androidmonitor.constants.POOL.POOL_NAME_CLIENT;
-import static cn.edu.whut.androidmonitor.constants.POOL.POOL_NAME_Monitor;
+import static cn.edu.whut.androidmonitor.constants.POOL.POOL_NAME_MONITOR;
 
 /**
  * @author : GuMorming
@@ -49,7 +49,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         System.out.println("ws建立成功");
-        // 将URL中的信息拆分
+        // 将URL中的信息拆分, 连接消息的格式Web和Android客户端为统一格式
         String INFO = session.getUri().getPath().split("INFO=")[1];
         System.out.println(INFO);
         
@@ -70,20 +70,41 @@ public class WebSocketHandler extends TextWebSocketHandler {
                     poolSessionMap = new HashMap<>(3);
                     wsSessionMap.put(poolName, poolSessionMap);
                 }
-                poolSessionMap.put(username, session);
+                poolSessionMap.put(session.getId(), session);
                 
                 // 若连接类型为 "client", 通知给所有 "monitor"类型用户
                 if (POOL_NAME_CLIENT.equals(poolName)) {
-                    Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_Monitor);
+                    Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_MONITOR);
                     if (monitorSessionMap != null) {
+                        jsonObject.put(KEY_DATA, session.getId());
+                        MonitorMessage clientOnConnectMessage = new MonitorMessage(jsonObject.toString());
                         for (Map.Entry<String, WebSocketSession> entry : monitorSessionMap.entrySet()) {
                             WebSocketSession monitorSession = entry.getValue();
-                            monitorSession.sendMessage(new TextMessage("当前被控端" + poolSessionMap.size() + "个"));
+                            monitorSession.sendMessage(new TextMessage(clientOnConnectMessage.toJson().toString()));
                         }
                     }
                     System.out.println("当前被控端个数：" + poolSessionMap.size());
                 }
-                System.out.println("URI:" + session.getUri());
+                // 若连接类型为 "monitor", 将当前client池中用户信息推送过去
+                else {
+                    // 获取Client池
+                    Map<String, WebSocketSession> clientSessionMap = wsSessionMap.get(POOL_NAME_CLIENT);
+                    if (clientSessionMap != null) {
+                        JSONObject pushJson = new JSONObject();
+                        pushJson.put(KEY_COMMAND, COMMAND_PUSH);
+                        pushJson.put(KEY_POOL_NAME, POOL_NAME_CLIENT);
+                        for (Map.Entry<String, WebSocketSession> entry : clientSessionMap.entrySet()) {
+                            WebSocketSession clientSession = entry.getValue();
+                            String clientName = getUsernameFromSessionHeaders(clientSession.getHandshakeHeaders());
+                            pushJson.put(KEY_USERNAME, clientName);
+                            pushJson.put(KEY_DATA, clientSession.getId());
+                            MonitorMessage pushMessage = new MonitorMessage(pushJson.toString());
+                            session.sendMessage(new TextMessage(pushMessage.toJson().toString()));
+                        }
+                    } else {
+                        System.out.println("暂无Android客户端在线");
+                    }
+                }
             }
         }
     }
@@ -111,19 +132,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                     // 问候消息
                     case COMMAND_GREETING -> System.out.println("Client-" + username + ":" + message.getData());
                     // 截图数据
-                    case COMMAND_SCREENSHOT -> {
-                        Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_Monitor);
-                        if (monitorSessionMap == null) {
-                            System.out.println("暂无监控端在线!");
-                            return;
-                        } else {
-                            for (Map.Entry<String, WebSocketSession> entry : monitorSessionMap.entrySet()) {
-                                WebSocketSession monitorSession = entry.getValue();
-                                monitorSession.sendMessage(new TextMessage(message.toJson().toString()));
-                            }
-                        }
-                        
-                    }
+                    case COMMAND_SCREENSHOT -> getScreenShot(message);
                 }
             } else {
                 System.out.println("Client发送Command为NULL");
@@ -138,17 +147,11 @@ public class WebSocketHandler extends TextWebSocketHandler {
             System.out.println("Monitor-" + message.getUsername() + ":" + message.getData());
             if (message.getUsername() != null && message.getCommand() != null) {
                 switch (message.getCommand()) {
-                    case COMMAND_GREETING:
-                        sendGreetingToClients(message);
-                        break;
-                    case COMMAND_SCREENSHOT:
-                        startMonitoring(message);
-                        break;
-                    case COMMAND_SCREENSHOT_STOP:
-                        stopMonitoring(message);
-                        break;
-                    default:
-                        break;
+                    case COMMAND_GREETING -> sendGreetingToClients(message);
+                    case COMMAND_SCREENSHOT -> startMonitoring(message);
+                    case COMMAND_SCREENSHOT_STOP -> stopMonitoring(message);
+                    default -> {
+                    }
                 }
             }
         }
@@ -168,9 +171,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
         if (clientSessionMap == null) {
             System.out.println("暂无被控端在线!");
         } else {
+            String selectedId = message.getData();
             for (Map.Entry<String, WebSocketSession> entry : clientSessionMap.entrySet()) {
                 WebSocketSession session = entry.getValue();
-                session.sendMessage(new TextMessage(message.toJson().toString()));
+                if (session.getId().equals(selectedId)) {
+                    session.sendMessage(new TextMessage(message.toJson().toString()));
+                } else {
+                    System.out.println("未找到目标被控端");
+                }
             }
         }
     }
@@ -211,6 +219,24 @@ public class WebSocketHandler extends TextWebSocketHandler {
         }
     }
     
+    /**
+     * 从Android-client获取截图数据
+     *
+     * @param message
+     * @throws IOException
+     */
+    public void getScreenShot(ClientMessage message) throws IOException {
+        Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_MONITOR);
+        if (monitorSessionMap == null) {
+            System.out.println("暂无监控端在线!");
+        } else {
+            for (Map.Entry<String, WebSocketSession> entry : monitorSessionMap.entrySet()) {
+                WebSocketSession monitorSession = entry.getValue();
+                monitorSession.sendMessage(new TextMessage(message.toJson().toString()));
+            }
+        }
+    }
+    
     
     /**
      * socket 断开连接时
@@ -221,16 +247,37 @@ public class WebSocketHandler extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-//        String poolName = getPoolNameFromSessionHeaders(session.getHandshakeHeaders());
-//        Map<String, WebSocketSession> map = wsSessionMap.get(poolName);
-//        if (map != null) {
-//            map.remove(getUsernameFromSessionHeaders(session.getHandshakeHeaders()));
-//        }
-//        if (poolName.equals(POOL_NAME_CLIENT)) {
-//
-//        }
-        
-        System.out.println("ws断开");
+        System.out.println(":ws断开");
+        // 获得客户端传来的消息
+        // 从HTTPHeader中获取连接池类型
+        String poolName = getPoolNameFromSessionHeaders(session.getHandshakeHeaders());
+        System.out.println(poolName);
+        // 若为android-"client"
+        if (POOL_NAME_CLIENT.equals(poolName)) {
+            //向所有 Monitor 推送离线通知
+            Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_MONITOR);
+            if (monitorSessionMap != null) {
+                JSONObject leaveJson = new JSONObject();
+                leaveJson.put(KEY_COMMAND, COMMAND_LEAVE);
+                leaveJson.put(KEY_DATA, session.getId());
+                ClientMessage leaveMessage = new ClientMessage(leaveJson.toString());
+                for (Map.Entry<String, WebSocketSession> entry : monitorSessionMap.entrySet()) {
+                    WebSocketSession monitorSession = entry.getValue();
+                    monitorSession.sendMessage(new TextMessage(leaveMessage.toJson().toString()));
+                    System.out.println("Leave Id:" + session.getId());
+                }
+                //  从Map中移除
+                Map<String, WebSocketSession> clientSessionMap = wsSessionMap.get(POOL_NAME_CLIENT);
+                clientSessionMap.remove(session.getId());
+            } else {
+                System.out.println("暂无监控端在线!");
+            }
+        }
+        // 若为 Monitor
+        else {
+            Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_MONITOR);
+            monitorSessionMap.remove(session.getId());
+        }
     }
     
     /**
