@@ -21,6 +21,7 @@ public class MessageKey {
     // 发送屏幕截图命令
     public static final String COMMAND_SCREENSHOT = "screenshot";
     public static final String COMMAND_SCREENSHOT_STOP = "screenshot_stop";
+    public static final String COMMAND_SCREENSHOT_CANCEL = "screenshot_cancel";
     // Android离线推送命令
     public static final String COMMAND_LEAVE = "leave";
     

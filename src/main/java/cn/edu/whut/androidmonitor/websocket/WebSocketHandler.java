@@ -14,8 +14,9 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static cn.edu.whut.androidmonitor.constants.MessageKey.*;
@@ -36,9 +37,11 @@ import static cn.edu.whut.androidmonitor.constants.POOL.POOL_NAME_MONITOR;
  */
 @Component
 public class WebSocketHandler extends TextWebSocketHandler {
-    // 监控池-监控端-会话Session 及 被控池-被控端-会话Session,
+    // 监控池-监控端-会话Session 及 被控池-被控端-会话Session, 因此初始化为2
     // 使用双层Map实现对应关系
     private static final Map<String, Map<String, WebSocketSession>> wsSessionMap = new HashMap<>(2);
+    // 被控端Id-对应监控端Id, 保存传输关系
+    private static final Map<String, List<String>> screenshotSessionMap = new HashMap<>(2);
     
     /**
      * socket 建立成功事件
@@ -124,6 +127,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         if (POOL_NAME_CLIENT.equals(poolName)) {
             // 将Android-Client发来的消息转为json格式
             JSONObject jsonobject = new JSONObject(webSocketMessage.getPayload().toString());
+            System.out.println(jsonobject);
             ClientMessage message = new ClientMessage(jsonobject.toString());
             String command = message.getCommand();
             String username = getUsernameFromSessionHeaders(session.getHandshakeHeaders());
@@ -132,7 +136,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
                     // 问候消息
                     case COMMAND_GREETING -> System.out.println("Client-" + username + ":" + message.getData());
                     // 截图数据
-                    case COMMAND_SCREENSHOT -> getScreenShot(message);
+                    case COMMAND_SCREENSHOT -> getScreenShot(message, session.getId());
+                    // 用户取消截图
+                    case COMMAND_SCREENSHOT_CANCEL -> cancelScreenshot(session.getId());
                 }
             } else {
                 System.out.println("Client发送Command为NULL");
@@ -144,19 +150,31 @@ public class WebSocketHandler extends TextWebSocketHandler {
             JSONObject jsonobject = new JSONObject(webSocketMessage.getPayload().toString());
             MonitorMessage message = new MonitorMessage(jsonobject.toString());
             System.out.println(jsonobject);
-            System.out.println("Monitor-" + message.getUsername() + ":" + message.getData());
             if (message.getUsername() != null && message.getCommand() != null) {
                 switch (message.getCommand()) {
                     case COMMAND_GREETING -> sendGreetingToClients(message);
-                    case COMMAND_SCREENSHOT -> startMonitoring(message);
-                    case COMMAND_SCREENSHOT_STOP -> stopMonitoring(message);
-                    default -> {
+                    case COMMAND_SCREENSHOT -> {
+                        // 保存传输关系
+                        String clientSessionId = message.getData();
+                        List<String> correspondMonitorList = screenshotSessionMap.get(clientSessionId);
+                        if (correspondMonitorList == null) {
+                            correspondMonitorList = new ArrayList<>();
+                        }
+                        correspondMonitorList.add(session.getId());
+                        screenshotSessionMap.put(clientSessionId, correspondMonitorList);
+                        startMonitoring(message);
+                    }
+                    case COMMAND_SCREENSHOT_STOP -> {
+                        List<String> corrMonitorList = screenshotSessionMap.get(message.getData());
+                        corrMonitorList.remove(session.getId());
+                        screenshotSessionMap.put(message.getData(), corrMonitorList);
+                        stopMonitoring(message);
                     }
                 }
             }
         }
-        
-        session.sendMessage(new TextMessage("server: " + LocalDateTime.now()));
+
+//        session.sendMessage(new TextMessage("server: " + LocalDateTime.now()));
     }
     
     /**
@@ -175,7 +193,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
             for (Map.Entry<String, WebSocketSession> entry : clientSessionMap.entrySet()) {
                 WebSocketSession session = entry.getValue();
                 if (session.getId().equals(selectedId)) {
-                    session.sendMessage(new TextMessage(message.toJson().toString()));
+                    if (session.isOpen()) {
+                        // 发送命令
+                        session.sendMessage(new TextMessage(message.toJson().toString()));
+                    } else {
+                        System.out.println("会话已关闭");
+                    }
                 } else {
                     System.out.println("未找到目标被控端");
                 }
@@ -184,7 +207,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
     
     /**
-     * Web-Monitor向Android-Client发送截图命令
+     * Web-Monitor向Android-Client发送停止截图命令
      *
      * @param message
      * @throws IOException
@@ -195,10 +218,44 @@ public class WebSocketHandler extends TextWebSocketHandler {
         if (clientSessionMap == null) {
             System.out.println("暂无被控端在线!");
         } else {
+            String screenshotId = message.getData();
             for (Map.Entry<String, WebSocketSession> entry : clientSessionMap.entrySet()) {
-                WebSocketSession session = entry.getValue();
-                session.sendMessage(new TextMessage(message.toJson().toString()));
+                String clientId = entry.getKey();
+                if (clientId.equals(screenshotId)) {
+                    WebSocketSession session = entry.getValue();
+                    session.sendMessage(new TextMessage(message.toJson().toString()));
+                    break;
+                }
             }
+        }
+    }
+    
+    /**
+     * Android-client 取消截图
+     *
+     * @param clientSessionId -- 拒绝截图的Android-client Id
+     */
+    public void cancelScreenshot(String clientSessionId) throws IOException {
+        List<String> correspondMonitorList = screenshotSessionMap.get(clientSessionId);
+        if (correspondMonitorList == null || correspondMonitorList.isEmpty()) {
+            System.out.println("无可拒绝");
+        } else {
+            String removeMonitorSessionId = null;
+            JSONObject cancelJson = new JSONObject();
+            cancelJson.put(KEY_COMMAND, COMMAND_SCREENSHOT_CANCEL);
+            Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_MONITOR);
+            for (String corrMonitorSessionId : correspondMonitorList) {
+                for (Map.Entry<String, WebSocketSession> entry : monitorSessionMap.entrySet()) {
+                    String monitorSessionId = entry.getKey();
+                    if (monitorSessionId.equals(corrMonitorSessionId)) {
+                        WebSocketSession monitorSession = entry.getValue();
+                        monitorSession.sendMessage(new TextMessage(cancelJson.toString()));
+                        removeMonitorSessionId = monitorSessionId;
+                        break;
+                    }
+                }
+            }
+            correspondMonitorList.remove(removeMonitorSessionId);
         }
     }
     
@@ -220,19 +277,26 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
     
     /**
-     * 从Android-client获取截图数据
+     * 从Android-client获取截图数据, 转发给对应Web-Monitor
      *
      * @param message
      * @throws IOException
      */
-    public void getScreenShot(ClientMessage message) throws IOException {
-        Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_MONITOR);
-        if (monitorSessionMap == null) {
-            System.out.println("暂无监控端在线!");
+    public void getScreenShot(ClientMessage message, String clientSessionId) throws IOException {
+        List<String> corrMonitorList = screenshotSessionMap.get(clientSessionId);
+        if (corrMonitorList == null) {
+            System.out.println("无可转发!");
         } else {
-            for (Map.Entry<String, WebSocketSession> entry : monitorSessionMap.entrySet()) {
-                WebSocketSession monitorSession = entry.getValue();
-                monitorSession.sendMessage(new TextMessage(message.toJson().toString()));
+            Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_MONITOR);
+            for (String corrMonitorId : corrMonitorList) {
+                for (Map.Entry<String, WebSocketSession> entry : monitorSessionMap.entrySet()) {
+                    String monitorId = entry.getKey();
+                    if (corrMonitorId.equals(monitorId)) {
+                        WebSocketSession monitorSession = entry.getValue();
+                        monitorSession.sendMessage(new TextMessage(message.toJson().toString()));
+                        break;
+                    }
+                }
             }
         }
     }

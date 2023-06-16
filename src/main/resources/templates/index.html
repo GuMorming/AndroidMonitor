@@ -11,18 +11,22 @@
     <link href="/dist/css/tabler-payments.min.css" rel="stylesheet"/>
     <link href="/dist/css/tabler-vendors.min.css" rel="stylesheet"/>
     <link href="/dist/css/demo.min.css" rel="stylesheet"/>
-    <style>
-        @import url('https://rsms.me/inter/inter.css');
+    <!-- 字体 -->
+    <!--    <style>
+           @import url('https://rsms.me/inter/inter.css');
 
-        :root {
-            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-        }
+           :root {
+               &#45;&#45;tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+           }
 
-        body {
-            font-feature-settings: "cv03", "cv04", "cv11";
-        }
-    </style>
+           body {
+               font-feature-settings: "cv03", "cv04", "cv11";
+           }
+       </style> -->
     <script src="/js/jquery.js"></script>
+    <!-- ECharts -->
+    <script src="/js/echarts.js"></script>
+    <script src="/js/echarts-liquidfill.js"></script>
 </head>
 <body class="layout-boxed">
 <script src="/js/theme.js"></script>
@@ -90,7 +94,7 @@
                         <div class="nav-item dropdown d-none d-md-flex me-3">
                             <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1"
                                aria-label="Show notifications">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
+                                <!-- https://tabler-icons.io/i/bell -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                      stroke-linecap="round" stroke-linejoin="round">
@@ -106,9 +110,31 @@
                                         <h3 class="card-title">最新消息</h3>
                                     </div>
                                     <!-- 消息列表-->
-                                    <div class="list-group list-group-flush list-group-hoverable">
-                                        <!-- example 1 -->
+                                    <div class="list-group list-group-flush list-group-hoverable ">
                                         <div class="list-group-item">
+                                            <div class="alert alert-success alert-dismissible" role="alert">
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <!-- https://tabler-icons.io/i/check -->
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                             class="icon icon-tabler icon-tabler-check" width="24"
+                                                             height="24" viewBox="0 0 24 24" stroke-width="1"
+                                                             stroke="currentColor" fill="none" stroke-linecap="round"
+                                                             stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M5 12l5 5l10 -10"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="alert-title">Wow! Everything worked!</h4>
+                                                        <div class="text-muted">Your account has been saved!</div>
+                                                    </div>
+                                                </div>
+                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                            </div>
+                                        </div>
+                                        <!--   example 1-->
+                                        <div class="list-group-item ">
                                             <div class="row align-items-center">
                                                 <div class="col-auto"><span
                                                         class="status-dot status-dot-animated bg-red d-block"></span>
@@ -118,92 +144,6 @@
                                                     <div class="d-block text-muted text-truncate mt-n1">
                                                         Change deprecated html tags to text decoration classes (#29604)
                                                     </div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <a href="#" class="list-group-item-actions">
-                                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted"
-                                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                             stroke="currentColor" fill="none" stroke-linecap="round"
-                                                             stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/>
-                                                        </svg>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- example 2 -->
-                                        <div class="list-group-item">
-                                            <div class="row align-items-center">
-                                                <div class="col-auto"><span class="status-dot d-block"></span></div>
-                                                <div class="col text-truncate">
-                                                    <a href="#" class="text-body d-block">Example 2</a>
-                                                    <div class="d-block text-muted text-truncate mt-n1">
-                                                        justify-content:between ⇒ justify-content:space-between (#29734)
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <a href="#" class="list-group-item-actions show">
-                                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow"
-                                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                             stroke="currentColor" fill="none" stroke-linecap="round"
-                                                             stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/>
-                                                        </svg>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- example 3 -->
-                                        <div class="list-group-item">
-                                            <div class="row align-items-center">
-                                                <div class="col-auto"><span class="status-dot d-block"></span></div>
-                                                <div class="col text-truncate">
-                                                    <a href="#" class="text-body d-block">Example 3</a>
-                                                    <div class="d-block text-muted text-truncate mt-n1">
-                                                        Update change-version.js (#29736)
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <a href="#" class="list-group-item-actions">
-                                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted"
-                                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                             stroke="currentColor" fill="none" stroke-linecap="round"
-                                                             stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/>
-                                                        </svg>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- example 4 -->
-                                        <div class="list-group-item">
-                                            <div class="row align-items-center">
-                                                <div class="col-auto"><span
-                                                        class="status-dot status-dot-animated bg-green d-block"></span>
-                                                </div>
-                                                <div class="col text-truncate">
-                                                    <a href="#" class="text-body d-block">Example 4</a>
-                                                    <div class="d-block text-muted text-truncate mt-n1">
-                                                        Regenerate package-lock.json (#29730)
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <a href="#" class="list-group-item-actions">
-                                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted"
-                                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                             stroke="currentColor" fill="none" stroke-linecap="round"
-                                                             stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/>
-                                                        </svg>
-                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -269,7 +209,7 @@
                         </h2>
                     </div>
                     <!-- 连接WebSocket服务器 -->
-                    <div class="col-xl-auto d-none d-md-flex">
+                    <div class="col-xl-auto d-md-flex">
                         <a id="connectBtn"
                            class="btn btn-primary" onclick="toggleConnectionClicked()">
                             <!-- https://tabler-icons.io/i/plug-connected -->
@@ -299,7 +239,7 @@
                             </svg>
                             <span id="connectSpinner"
                                   class="spinner-border spinner-border-sm me-2" role="status" display="none"></span>
-                            <span id="connectContent">Connect to Server</span>
+                            <span id="connectContent">连接服务器</span>
                         </a>
                     </div>
                 </div>
@@ -333,13 +273,28 @@
                 </div>
                 <!-- 1. 数据区 -->
                 <div class="hr-text">数据监控区</div>
+                <div class="container">
+                    <div class="row row-deck row-cards">
+                        <div class="col-lg-2">
+                            <div class="card">
+                                <div class="card-header border-0">
+                                    <div class="card-title">可用内存</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart" id="chart-memory-available"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 2. 图像区 -->
                 <div class="hr-text">桌面监控区</div>
                 <!-- src="data:image/png;base64,base64代码" -->
                 <!-- 显示桌面 -->
-                <div class="col-xl-auto d-none d-md-flex">
+                <div class="col-xl-auto  d-md-flex">
                     <a id="screenshotBtn"
-                       class="btn btn-success" onclick="toggleScreenshot()">
+                       class="btn btn-success disabled" onclick="toggleScreenshot()">
                         <!-- https://tabler-icons.io/i/brand-android  -->
                         <svg id="android-svg"
                              xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-android"
@@ -359,17 +314,15 @@
                         <span id="screenshotContent">监控桌面</span>
                     </a>
                 </div>
-                <div class="container-narrow">
-                    <div id="carousel-captions" class="carousel slide" data-bs-ride="carousel">
+                <div class="container-tight">
+                    <div id="carousel" class="carousel" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img id="client-desktop" class="d-block  w-100" alt=""
+                                <img id="client-desktop" class="d-block  " alt=""
                                      src="/static/brands/android.svg"/>
                             </div>
                         </div>
-                        <div class="carousel-caption d-none d-md-block text-google">
-                            <h3>Client Desktop</h3>
-                        </div>
+
                     </div>
                 </div>
 
@@ -535,5 +488,7 @@
 <script src="/dist/js/demo.js" defer></script>
 <!-- WebSocket Core -->
 <script src="/js/websocket.js" defer></script>
+<!-- ECharts -->
+<script src="/js/charts.js" defer></script>
 </body>
 </html>

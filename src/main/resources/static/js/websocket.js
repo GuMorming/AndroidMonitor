@@ -5,6 +5,8 @@ const poolName = "monitor"; // 连接池名称
 let username;
 let selectId;
 /* 元素绑定 */
+// 通知
+let bell = $(".badge").hide();
 // Web客户端连接
 let connectBtn = $("#connectBtn");
 let connectSpinner = $("#connectSpinner");
@@ -13,17 +15,21 @@ let connectContent = $("#connectContent");
 let plugConnectedSvg = $("#plug-connected-svg");
 let plugOffSvg = $("#plug-off-svg");
 plugOffSvg.hide();
+const connectToServerStr = "连接服务器";
+const disconnectingStr = "断开中...";
+const connectingStr = "尝试连接中...";
+const disconnectFromServerStr = "断开";
 // Android客户端上线
 let clientNumSpan = $("#clientNum");
 let clientNum = 0;
 let clientList = $("#clientList");
-const clientStatusSpan = "<span class=\"clientStatus badge bg-green ms-auto\"></span>"; // 状态绿点
-const connectToServerStr = "Connect to Server";
-const disconnectingStr = "Disconnecting...";
-const connectingStr = "Connecting...";
-const disconnectFromServerStr = "Disconnect from Server";
-// Android客户端数据区
-
+const clientStatusSpan = "<span class=\"clientStatus status status-dot-animated bg-green ms-auto\"></span>"; // 状态绿点
+/* Android客户端数据区 */
+// 内存水球图
+const memoryChart = echarts.init(document.getElementById("chart-memory-available"));
+let memory;
+let memoryAvailable;
+let memoryProportion = 0;
 // Android客户端图像区
 let clientDesktop = $("#client-desktop");
 let screenShotBtn = $("#screenshotBtn");
@@ -83,16 +89,18 @@ function toggleScreenshot() {
             'command': 'screenshot_stop',
             'poolName': poolName,
             'username': username,
-            'data': screenShotBtn
+            'data': screenshotId
         });
         ws.send(msg);
         screenShotBtn.attr("class", "btn btn-success");
         screenShotContent.html(screenShotStr);
+        clientDesktop.attr("src", "static/brands/android.svg");
         isScreenShot = false;
     } else {
         screenshotId = selectId;
         if (screenshotId === null) {
-
+            alert(screenshotId + "为空")
+            return;
         } else {
             const msg = JSON.stringify({
                 'command': 'screenshot'
@@ -104,22 +112,26 @@ function toggleScreenshot() {
             screenShotContent.html(screenShotConnectingStr);
             ws.send(msg);
             isScreenShot = true;
-
         }
     }
 }
 
 function onClientItemSelected(selectedItem) {
-    // 清除所有active类
-    $(".client-list-item").removeClass("active");
-    // 清除所有绿点
-    $(".clientStatus").remove();
-    item = $(selectedItem);
-    item.parent().remove(".classStatus").remove("active");
-    item.addClass("active");
-    item.append(clientStatusSpan);
-    selectId = item.attr("id");
-
+    if (isScreenShot) {
+        alert("isScreenShot:" + isScreenShot);
+    } else {
+        // 激活监控桌面按钮
+        screenShotBtn.removeClass("disabled");
+        // 清除所有active类
+        $(".client-list-item").removeClass("active");
+        // 清除所有绿点
+        $(".clientStatus").remove();
+        item = $(selectedItem);
+        item.parent().remove(".classStatus").remove("active");
+        item.addClass("active");
+        item.append(clientStatusSpan);
+        selectId = item.attr("id");
+    }
 }
 
 
@@ -146,6 +158,9 @@ function WSonMessage(event) {
         case "screenshot":
             onReceiveBitmap(message);
             break;
+        case "screenshot_cancel":
+            onScreenshotCancel();
+            break;
         case "leave":
             onClientLeave(message);
             break;
@@ -156,6 +171,7 @@ function WSonMessage(event) {
 }
 
 function WSonClose() {
+    // 连接按钮
     plugOffSvg.hide();
     connectSpinner.hide();
     plugConnectedSvg.show();
@@ -165,10 +181,26 @@ function WSonClose() {
     clientNum = 0;
     clientNumSpan.html(clientNum);
     $(".client-list-item").remove();
+    // 图像区
+    isScreenShot = false;
+    selectId = null;
+    screenshotId = null;
+    clientDesktop.attr("src", "static/brands/android.svg");
+    screenShotContent.html(screenShotStr);
+    screenShotBtn.attr("class", "btn btn-success");
+    screenShotBtn.addClass("disabled")
 }
 
 function WSonError() {
     console.log("远程连接中断。", "ERROR");
+    // 图像区
+    clientDesktop.attr("src", "static/brands/android.svg");
+    screenShotContent.html(screenShotStr);
+    screenShotBtn.attr("class", "btn btn-success");
+    screenShotBtn.addClass("disabled")
+    isScreenShot = false;
+    selectId = null;
+    screenshotId = null;
 }
 
 function onConnectMessage(message) {
@@ -185,6 +217,15 @@ function onConnectMessage(message) {
     clientList.append(dropItem);
 }
 
+// 收到取消命令,图像区重置
+function onScreenshotCancel() {
+    isScreenShot = false;
+
+    clientDesktop.attr("src", "static/brands/android.svg");
+    screenShotContent.html(screenShotStr);
+    screenShotBtn.attr("class", "btn btn-success");
+    screenShotSpinner.hide();
+}
 
 function onClientLeave(message) {
     const id = message.data;
@@ -195,6 +236,11 @@ function onClientLeave(message) {
     clientNumSpan.html(clientNum);
     // 图像区重置
     if (id === selectId) {
+        isScreenShot = false;
+        selectId = null;
+        screenshotId = null;
+
+        screenShotBtn.addClass("disabled");
         clientDesktop.attr("src", "static/brands/android.svg");
         screenShotContent.html(screenShotStr);
         screenShotBtn.attr("class", "btn btn-success");
