@@ -12,16 +12,22 @@ package cn.edu.whut.androidmonitor.constants;
 public class MessageKey {
     // 连接命令
     public static final String COMMAND_CONNECT = "connect";
+    public static final String COMMAND_SELECT = "select";
     // 推送命令
     public static final String COMMAND_PUSH = "push";
     // 问候命令
     public static final String COMMAND_GREETING = "greeting";
-    // 发送进程信息命令
-    public static final String COMMAND_PROCESS_INFO = "processInfo";
-    // 发送屏幕截图命令
+    // 内存相关命令
+    public static final String COMMAND_TOTAL_MEMORY = "totalMemory";
+    public static final String COMMAND_DEVICE_INFO = "deviceInfo";
+    // 屏幕截图命令
     public static final String COMMAND_SCREENSHOT = "screenshot";
     public static final String COMMAND_SCREENSHOT_STOP = "screenshot_stop";
     public static final String COMMAND_SCREENSHOT_CANCEL = "screenshot_cancel";
+    public static final String COMMAND_LOCK_SCREEN = "lockScreen";
+    // 网络状态相关
+    public static final String COMMAND_NETWORK = "network";
+    public static final String COMMAND_NETSPEED = "netSpeed";
     // Android离线推送命令
     public static final String COMMAND_LEAVE = "leave";
     
