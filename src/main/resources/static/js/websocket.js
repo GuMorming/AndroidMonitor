@@ -1,11 +1,10 @@
 let ws;
 let SocketCreated = false;
-const poolName = "monitor"; // 连接池名称
 let username;
 let selectId = null;
 /* 元素绑定 */
 // 通知
-let bell = $(".badge").hide();
+let bell = $(".badge")
 
 // Web客户端连接
 let connectBtn = $("#connectBtn");
@@ -13,16 +12,11 @@ let connectSpinner = $("#connectSpinner");
 let connectContent = $("#connectContent");
 let plugConnectedSvg = $("#plug-connected-svg");
 let plugOffSvg = $("#plug-off-svg");
-const connectToServerStr = "连接服务器";
-const disconnectingStr = "断开中...";
-const connectingStr = "尝试连接中...";
-const disconnectFromServerStr = "断开";
 
 // Android客户端上线
 let clientNumSpan = $("#clientNum");
 let clientNum = 0;
 let clientList = $("#clientList");
-const clientStatusSpan = "<span class=\"clientStatus status-dot status-dot-animated status-green ms-auto \"></span>"; // 状态绿点
 
 /* Android客户端数据区 */
 // 内存水球图
@@ -36,12 +30,11 @@ let memoryProportion;
 let cpuUsageChart;
 let cpuUsageChartOption;
 let cpuChartData;
+
 // 电量-电池图
 let batteryChart;
 let batteryChartOption;
 let batteryData;
-let colorList; // 图表渐变颜色列表
-let chartConfig; // 列表联动配置
 
 // 网络-网络状态
 let network = $("#network");
@@ -50,17 +43,24 @@ let netSpeedChart;
 let netSpeedChartOption;
 let netSpeedData;
 
-// Android客户端图像区
+/* 监控区 */
 let isScreenShot = false;
 let clientDesktop = $("#client-desktop");
 let screenShotBtn = $("#screenshotBtn");
 let screenShotSpinner = $("#screenshotSpinner");
-screenShotSpinner.hide();
 let screenShotContent = $("#screenshotContent");
-const screenShotStr = "监控桌面";
-const screenShotConnectingStr = "申请权限中...";
-const screenShotStopStr = "停止监控";
 let screenshotId; // 监控桌面中的Android端ID
+/* 回放区 */
+let playBackDeviceList = $("#playBackDeviceList");
+let playBackDeviceNumSpan = $("#playBackDeviceNum");
+let playBackDeviceNum;
+let playBackList = $("#playBackList");
+let playBackImageData;
+let playBackDesktop = $("#playback-desktop");
+let totalPlayBackImageNum;
+let countImage;
+let progressBar = $("#progressBar");
+
 //------------------------------------------------------------------------------
 /**
  * 初始化连接区
@@ -72,7 +72,7 @@ function initConnectionSector() {
     plugOffSvg.hide();
     plugConnectedSvg.show();
     // 链接按钮内容
-    connectContent.html(connectToServerStr);
+    connectContent.html(CONNECT_TO_SERVER_STR);
     // 连接按钮样式
     connectBtn.attr("class", "btn btn-primary");
     // Android ClientList清空
@@ -185,10 +185,6 @@ function initDeviceInfoSector() {
 
     // 电池
     batteryChart = echarts.init(document.getElementById("chart-battery-available")); //初始化chart
-    colorList = {
-        first: ["#F179C4", "#26AEFB", "#CDAD92", "#ED65BA", "#989FBB", "#E86A6A", "#6718CF"],
-        second: ["#E33AA3", "#056FAB", "#FFAA62", "#E33AA3", "#28B1FF", "#FFAA62", "#F47384"]
-    };
     batteryChartOption = {
         grid: [{ //设置边距
             // left: 30,
@@ -209,10 +205,10 @@ function initDeviceInfoSector() {
                 show: false,
             },
             splitLine: { //隐藏刻度
-                show: false,
+                show: true,
             },
             axisLabel: { //Y轴文字
-                show: false,
+                show: true,
                 // color: '#fff',
                 fontSize: 10,
                 formatter: '{value} %'
@@ -253,11 +249,11 @@ function initDeviceInfoSector() {
                         return new echarts.graphic.LinearGradient(
                             1, 1, 0, 0, [{ // 0%处的颜色
                                 offset: 0,
-                                color: colorList.first[params.dataIndex % 7]
+                                color: GRADIENT_COLOR_LIST.first[(params.dataIndex + Math.floor(Math.random() * 5)) % 7]
                             },
                                 { // 100%处的颜色
                                     offset: 1,
-                                    color: colorList.second[params.dataIndex % 7]
+                                    color: GRADIENT_COLOR_LIST.second[(params.dataIndex + Math.floor(Math.random() * 5)) % 7]
                                 }
                             ])
                     }
@@ -367,41 +363,60 @@ function initDeviceInfoSector() {
  * 初始化桌面监控区
  */
 function initDesktopSector() {
+    /* 监控区 */
     isScreenShot = false;
     selectId = null;
     screenshotId = null;
     // 图像换为Android logo
-    clientDesktop.attr("src", "static/brands/android.svg");
+    clientDesktop.attr("src", "/img/brands/android.svg");
     // 监控按钮内容为"监控桌面"
-    screenShotContent.html(screenShotStr);
+    screenShotContent.html(SCREENSHOT_STR);
     // 监控按钮样式
     screenShotBtn.attr("class", "btn btn-success");
     // 监控按钮不可用
     screenShotBtn.addClass("disabled")
+    // 隐藏旋转进度
+    screenShotSpinner.hide();
     // 保存图像按钮不可用
     $("#saveScreenshotBtn").addClass("disabled");
 }
 
 /**
+ * 初始化回放区
+ */
+function initPlayBackSector() {
+    playBackDeviceNum = 0;
+    playBackImageData = [];
+    totalPlayBackImageNum = 0;
+    countImage = 0;
+    $(".playBackDevice-list-item").remove();
+    // 回放历史列表清空
+    $(".playBack-list-item").remove();
+    // 图像换为Android logo
+    playBackDesktop.attr("src", "/img/brands/android.svg");
+    // 进度条清零
+    progressBar.attr("style", "width: 0%");
+}
+
+/**
  * 连接webSocket与断开
  */
-
 function toggleConnectionClicked() {
-    if (SocketCreated && (ws.readyState === 0 || ws.readyState === 1)) {
+    if (SocketCreated && (ws.readyState === WEBSOCKET_CONNECTING || ws.readyState === WEBSOCKET_OPEN)) {
         SocketCreated = false;
         const msg = JSON.stringify({
-            'command': 'leave', 'poolName': poolName, 'username': username,
-            'info': '离开房间'
+            'command': 'leave',
+            'poolName': POOL_NAME,
+            'username': username,
+            'info': 'Monitor-' + username + '离开'
         });
         ws.send(msg);
-        // // 隐藏连接按钮
-        // plugConnectedSvg.hide();
         // 显示断开按钮
         plugOffSvg.show();
         // 显示旋转进度
         connectSpinner.show();
         // 按钮内容为"断开中"
-        connectContent.text(disconnectingStr);
+        connectContent.text(DISCONNECTING_STR);
         ws.close();
     } else {
         console.log("准备连接到服务器 ...");
@@ -413,9 +428,9 @@ function toggleConnectionClicked() {
                 // 显示连接旋转进度
                 connectSpinner.show();
                 // 按钮内容为"连接中"
-                connectContent.html(connectingStr);
+                connectContent.html(CONNECTING_STR);
                 ws = new WebSocket(
-                    'ws://localhost:8080/app-websocket/INFO={"command":"connect","username":"' + username + '","poolName":"' + poolName + '"}');
+                    'ws://localhost:8080/app-websocket/INFO={"command":"connect","username":"' + username + '","poolName":"' + POOL_NAME + '"}');
             }
             SocketCreated = true;
         } catch (ex) {
@@ -437,14 +452,14 @@ function toggleScreenshot() {
     if (isScreenShot) {
         const msg = JSON.stringify({
             'command': 'screenshot_stop',
-            'poolName': poolName,
+            'poolName': POOL_NAME,
             'username': username,
             'data': screenshotId
         });
         ws.send(msg);
         screenShotBtn.attr("class", "btn btn-success");
-        screenShotContent.html(screenShotStr);
-        clientDesktop.attr("src", "static/brands/android.svg");
+        screenShotContent.html(SCREENSHOT_STR);
+        clientDesktop.attr("src", "/img/brands/android.svg");
         $("#saveScreenshotBtn").addClass("disabled");
         isScreenShot = false;
     } else {
@@ -455,60 +470,16 @@ function toggleScreenshot() {
         } else {
             const msg = JSON.stringify({
                 'command': 'screenshot'
-                , 'poolName': poolName
+                , 'poolName': POOL_NAME
                 , 'username': username
                 , 'data': screenshotId
             })
             screenShotSpinner.show();
-            screenShotContent.html(screenShotConnectingStr);
+            screenShotContent.html(SCREENSHOT_CONNECTING_STR);
             ws.send(msg);
             isScreenShot = true;
         }
     }
-}
-
-/**
- * 选择设备
- * @param selectedItem
- */
-function onClientItemSelected(selectedItem) {
-    if (isScreenShot) {
-        alert("isScreenShot:" + isScreenShot);
-    } else {
-        // 激活监控桌面按钮
-        screenShotBtn.removeClass("disabled");
-        // 清除所有active类
-        $(".client-list-item").removeClass("active");
-        // 清除所有绿点
-        $(".clientStatus").remove();
-        let item = $(selectedItem);
-        item.parent().remove(".classStatus").remove("active");
-        item.addClass("active");
-        item.append(clientStatusSpan);
-        selectId = item.attr("id");
-        // 发送给服务器,保存选择关系
-        const msg = JSON.stringify({
-            'command': 'select',
-            'poolName': poolName,
-            'username': username,
-            'data': selectId
-        });
-        ws.send(msg);
-    }
-}
-
-function lockScreen() {
-    if (selectId == null) {
-        console.log("selectId为空!")
-        return;
-    }
-    const msg = JSON.stringify({
-        'command': 'lockScreen',
-        'poolName': poolName,
-        'username': username,
-        'data': selectId
-    });
-    ws.send(msg);
 }
 
 function WSonOpen() {
@@ -516,7 +487,9 @@ function WSonOpen() {
     connectSpinner.hide();
     plugOffSvg.show();
     connectBtn.attr("class", "btn btn-outline-danger")
-    connectContent.html(disconnectFromServerStr);
+    connectContent.html(DISCONNECT_FROM_SERVER_STR);
+    /* 获得回放设备列表 */
+    getPlayBackDeviceList();
 }
 
 function WSonMessage(event) {
@@ -543,6 +516,15 @@ function WSonMessage(event) {
         case "screenshot_cancel":
             onScreenshotCancel();
             break;
+        case "playBackDevices":
+            onReceivePlayBackDeviceList(message);
+            break;
+        case "playBackList":
+            onReceivePlayBackList(message);
+            break;
+        case "playBack":
+            onReceivePlayBackImage(message);
+            break;
         case "leave":
             onClientLeave(message);
             break;
@@ -559,10 +541,95 @@ function WSonClose() {
     initDeviceInfoSector();
     // 图像区初始化
     initDesktopSector();
+    // 回放区初始化
+    initPlayBackSector();
 }
 
 function WSonError() {
     console.log("远程连接中断。", "ERROR");
+}
+
+/**
+ * 选择在线设备
+ * @param selectedItem
+ */
+function onClientItemSelected(selectedItem) {
+    if (isScreenShot) {
+        alert("isScreenShot:" + isScreenShot);
+    } else {
+        // 激活监控桌面按钮
+        screenShotBtn.removeClass("disabled");
+        // 清除所有active类
+        $(".client-list-item").removeClass("active");
+        // 清除所有绿点
+        $(".clientStatus").remove();
+        let item = $(selectedItem);
+        item.parent().remove(".classStatus").remove("active");
+        // 为选择设备添加选择状态和绿点
+        item.addClass("active");
+        item.append(GREEN_DOT_STATUS_SPAN);
+        selectId = item.attr("id");
+        // 发送给服务器, 获取
+        const msg = JSON.stringify({
+            'command': 'select',
+            'poolName': POOL_NAME,
+            'username': username,
+            'data': selectId
+        });
+        ws.send(msg);
+    }
+}
+
+/**
+ * 选择回放设备
+ * @param selectedItem
+ */
+function onPlayBackDeviceSelected(selectedItem) {
+    // 清除所有active类
+    $(".playBackDevice-list-item").removeClass("active");
+    // 清除所有绿点
+    $(".clientStatus").remove();
+    let item = $(selectedItem);
+    item.parent().remove(".classStatus").remove("active");
+    item.addClass("active");
+    item.append(GREEN_DOT_STATUS_SPAN);
+    let selectUID = item.attr("id");
+    // 清除回放历史列表
+    $(".playBack-list-item").remove();
+    // 发送给服务器, 获得回放历史列表
+    const msg = JSON.stringify({
+        'command': 'playBackList',
+        'poolName': POOL_NAME,
+        'username': username,
+        'data': selectUID
+    });
+    ws.send(msg);
+}
+
+/**
+ * 选择回放时间
+ * @param selectedItem
+ */
+function onPlayBackItemSelected(selectedItem) {
+    countImage = 0;
+    progressBar.attr("style", "width: 0%");
+    // 清除所有active类
+    $(".playBack-list-item").removeClass("active");
+    // 清除所有绿点
+    $(".clientStatus").remove();
+    let item = $(selectedItem);
+    item.parent().remove(".classStatus").remove("active");
+    item.addClass("active");
+    item.append(GREEN_DOT_STATUS_SPAN);
+    let selectSessionId = item.attr("id");
+    // 发送给服务器,开始准备接收图片编码
+    const msg = JSON.stringify({
+        'command': 'playBack',
+        'poolName': POOL_NAME,
+        'username': username,
+        'data': selectSessionId
+    });
+    ws.send(msg);
 }
 
 function onConnectMessage(message) {
@@ -572,9 +639,9 @@ function onConnectMessage(message) {
     // 新增android-client节点
     const id = message.data
     const username = message.username;
-    const androidIcon = "<img src=\"/static/brands/android.svg\" alt=\"Tabler\" class=\"navbar-brand-image\">";
+    const androidIcon = "<img src=\"/img/brands/android.svg\" alt=\"Tabler\" class=\"navbar-brand-image\">";
     const clientNameSpan = "<span>" + username + "</span>";
-    let dropItem = "<a id=\"" + id + "\" class=\"dropdown-item client-list-item\" onclick=\"onClientItemSelected(this" + ")\" href=\"#\">" + androidIcon + clientNameSpan + "</a>";
+    let dropItem = "<a id=\"" + id + "\" class=\"dropdown-item client-list-item\" onclick=\"onClientItemSelected(this" + ")\" >" + androidIcon + clientNameSpan + "</a>";
 
     clientList.append(dropItem);
 }
@@ -583,8 +650,8 @@ function onConnectMessage(message) {
 function onScreenshotCancel() {
     isScreenShot = false;
 
-    clientDesktop.attr("src", "static/brands/android.svg");
-    screenShotContent.html(screenShotStr);
+    clientDesktop.attr("src", "img/brands/android.svg");
+    screenShotContent.html(SCREENSHOT_STR);
     screenShotBtn.attr("class", "btn btn-success");
     screenShotSpinner.hide();
     $("#saveScreenshotBtn").addClass("disabled");
@@ -615,7 +682,7 @@ function onReceiveBitmap(message) {
     let url = "data:image/png;base64," + message.data;
     clientDesktop.attr("src", url);
     screenShotSpinner.hide();
-    screenShotContent.html(screenShotStopStr);
+    screenShotContent.html(SCREENSHOT_STOP_STR);
     screenShotBtn.attr("class", "btn btn-outline-danger");
     $("#lockBtn").removeClass("disabled")
     $("#saveScreenshotBtn")
@@ -693,6 +760,9 @@ function onReceiveDeviceInfo(message) {
     batteryChart.setOption(batteryChartOption);
 }
 
+/**
+ * 格式化Date: "yyyy/MM/dd HH:mm:SS"
+ */
 function getTime(date) {
     const ymd = [date.getFullYear(), date.getMonth() + 1, date.getDate()].join('/');
     const hour = date.getHours() < 10 ? ('0' + date.getHours()) : date.getHours();
@@ -702,6 +772,73 @@ function getTime(date) {
     return ymd + ' ' + hms;
 }
 
+/**
+ * 点击回放列表获取回放设备UID
+ */
+function getPlayBackDeviceList() {
+    const msg = JSON.stringify({
+        'command': 'playBackDevices',
+        'poolName': POOL_NAME,
+        'username': username,
+    });
+    ws.send(msg);
+}
+
+/**
+ * 获取回放设备UID时
+ * @param message
+ */
+function onReceivePlayBackDeviceList(message) {
+    // 增加回放数量
+    playBackDeviceNum++;
+    playBackDeviceNumSpan.html(playBackDeviceNum);
+    // 新增android-client节点
+    const UID = message.data
+    const playBackNameSpan = "<span>" + UID + "</span>";
+    let dropItem = "<a id=\"" + UID + "\" class=\"dropdown-item playBackDevice-list-item\" onclick=\"onPlayBackDeviceSelected(this" + ")\" >" + ANDROID_ICON + playBackNameSpan + "</a>";
+
+    playBackDeviceList.append(dropItem);
+}
+
+/**
+ * 接收回放列表
+ * @param message
+ */
+function onReceivePlayBackList(message) {
+    // 新增android-client节点
+    const sessionId = message.sessionId;
+    const date = message.date;
+    const playBackNameSpan = "<span>" + date + "</span>";
+    let dropItem = "<a id=\"" + sessionId + "\" class=\"dropdown-item playBack-list-item\" onclick=\"onPlayBackItemSelected(this" + ")\" >" + playBackNameSpan + "</a>";
+
+    playBackList.append(dropItem);
+}
+
+/**
+ * 接收回放图像base64编码
+ * @param message
+ */
+function onReceivePlayBackImage(message) {
+    // 获取总数
+    totalPlayBackImageNum = message.total;
+    // 获取图像编码
+    let imageBase64Code = message.data;
+    countImage++;
+    // 压栈保存, 用以重播
+    playBackImageData.push(imageBase64Code);
+    let url = "data:image/png;base64," + imageBase64Code;
+    playBackDesktop.attr("src", url);
+    progressBar.attr("style", "width:" + countImage / totalPlayBackImageNum * 100 + "%");
+}
+
+/**
+ * 模拟线程sleep,单位为秒
+ * @param second
+ */
+function sleep(second) {
+    for (let t = Date.now(); Date.now() - t <= second;) ;
+}
+
 $(function () {
     // 连接区初始化
     initConnectionSector();
@@ -709,4 +846,6 @@ $(function () {
     initDeviceInfoSector();
     // 桌面监控区
     initDesktopSector();
+    // 初始化回放区
+    initPlayBackSector();
 })

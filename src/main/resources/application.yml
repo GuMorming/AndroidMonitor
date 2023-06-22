@@ -4,6 +4,18 @@ server:
 spring:
   application:
     name: ${APP_NAME:unnamed}
+  datasource:
+    driver-class-name: ${jdbc.driver}
+    url: ${jdbc.url}
+    username: ${jdbc.username}
+    password: ${jdbc.password}
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: cn.edu.whut.androidmonitor.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
 
 pebble:
   #默认为".peb" 改为""

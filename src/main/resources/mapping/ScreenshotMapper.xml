@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.whut.androidmonitor.mapper.ScreenshotMapper">
+
+    <select id="findScreenshotByUID" parameterType="String" resultType="cn.edu.whut.androidmonitor.entity.ScreenShot">
+        SELECT *
+        FROM screenshot
+        WHERE UID = #{UID}
+        GROUP BY sessionId
+    </select>
+
+    <insert id="insertScreenshot" parameterType="cn.edu.whut.androidmonitor.entity.ScreenShot">
+        INSERT INTO screenshot(UID, date, imgBase64, sessionId)
+        VALUES (#{UID, jdbcType=VARCHAR},
+                #{date, jdbcType=TIMESTAMP},
+                #{imgBase64, jdbcType=VARCHAR},
+                #{sessionId,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="findAllUID" resultType="String">
+        SELECT UID
+        FROM screenshot
+        GROUP BY UID
+    </select>
+
+    <select id="findBase64ImageBySessionId" parameterType="String" resultType="String">
+        select imgBase64
+        from screenshot
+        where sessionId = #{sessionId}
+    </select>
+
+</mapper>

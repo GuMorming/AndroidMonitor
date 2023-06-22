@@ -24,10 +24,10 @@ public class MessageKey {
     public static final String COMMAND_SCREENSHOT = "screenshot";
     public static final String COMMAND_SCREENSHOT_STOP = "screenshot_stop";
     public static final String COMMAND_SCREENSHOT_CANCEL = "screenshot_cancel";
-    public static final String COMMAND_LOCK_SCREEN = "lockScreen";
-    // 网络状态相关
-    public static final String COMMAND_NETWORK = "network";
-    public static final String COMMAND_NETSPEED = "netSpeed";
+    public static final String COMMAND_GET_PLAYBACK_DEVICE = "playBackDevices";
+    public static final String COMMAND_GET_PLAYBACK_LIST = "playBackList";
+    public static final String COMMAND_PLAYBACK = "playBack";
+    public static final int PLAYBACK_SPEED = 40;
     // Android离线推送命令
     public static final String COMMAND_LEAVE = "leave";
     

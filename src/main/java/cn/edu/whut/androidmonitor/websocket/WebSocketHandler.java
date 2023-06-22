@@ -4,7 +4,10 @@ package cn.edu.whut.androidmonitor.websocket;
 import cn.edu.whut.androidmonitor.constants.MessageKey;
 import cn.edu.whut.androidmonitor.entity.ClientMessage;
 import cn.edu.whut.androidmonitor.entity.MonitorMessage;
+import cn.edu.whut.androidmonitor.entity.ScreenShot;
+import cn.edu.whut.androidmonitor.service.ScreenshotService;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -14,10 +17,8 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 import static cn.edu.whut.androidmonitor.constants.MessageKey.*;
 import static cn.edu.whut.androidmonitor.constants.POOL.POOL_NAME_CLIENT;
@@ -44,6 +45,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private static final Map<String, String> selcetSessionMap = new HashMap<>(2);
     // 被控端Id-对应监控端Id, 保存图像传输关系
     private static final Map<String, List<String>> screenshotSessionMap = new HashMap<>(2);
+    
+    @Autowired
+    ScreenshotService screenshotService;
     
     /**
      * socket 建立成功事件
@@ -131,35 +135,32 @@ public class WebSocketHandler extends TextWebSocketHandler {
             JSONObject jsonobject = new JSONObject(webSocketMessage.getPayload().toString());
             ClientMessage message = new ClientMessage(jsonobject.toString());
             String command = message.getCommand();
+            // 打印输出
             if (!command.equals(COMMAND_DEVICE_INFO) && !command.equals(COMMAND_SCREENSHOT)) {
                 System.out.println(jsonobject);
             }
             String username = getUsernameFromSessionHeaders(session.getHandshakeHeaders());
-            if (command != null) {
-                switch (command) {
-                    // 问候消息
-                    case COMMAND_GREETING -> System.out.println("Client-" + username + ":" + message.getData());
-                    // 截图数据
-                    case COMMAND_SCREENSHOT -> getScreenShot(message, session.getId());
-                    // 用户取消截图
-                    case COMMAND_SCREENSHOT_CANCEL -> cancelScreenshot(session.getId());
-                    // 总内存, 可用内存, CPU使用率, 网络状态, 网速, 电量
-                    case COMMAND_TOTAL_MEMORY, COMMAND_DEVICE_INFO -> {
-                        // 获取Monitor池
-                        Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_MONITOR);
-                        // 遍历选择关系,发给对应的Monitor
-                        for (Map.Entry<String, String> entry : selcetSessionMap.entrySet()) {
-                            String clientId = entry.getValue();
-                            if (clientId.equals(session.getId())) {
-                                WebSocketSession monitorSession = monitorSessionMap.get(entry.getKey());
-                                monitorSession.sendMessage(new TextMessage(jsonobject.toString()));
-                                break;
-                            }
+            switch (command) {
+                // 问候消息
+                case COMMAND_GREETING -> System.out.println("Client-" + username + ":" + message.getData());
+                // 截图数据
+                case COMMAND_SCREENSHOT -> getScreenShot(message, session.getId(), username);
+                // 用户取消截图
+                case COMMAND_SCREENSHOT_CANCEL -> cancelScreenshot(session.getId());
+                // 总内存, 可用内存, CPU使用率, 网络状态, 网速, 电量
+                case COMMAND_TOTAL_MEMORY, COMMAND_DEVICE_INFO -> {
+                    // 获取Monitor池
+                    Map<String, WebSocketSession> monitorSessionMap = wsSessionMap.get(POOL_NAME_MONITOR);
+                    // 遍历选择关系,发给对应的Monitor
+                    for (Map.Entry<String, String> entry : selcetSessionMap.entrySet()) {
+                        String clientId = entry.getValue();
+                        if (clientId.equals(session.getId())) {
+                            WebSocketSession monitorSession = monitorSessionMap.get(entry.getKey());
+                            monitorSession.sendMessage(new TextMessage(jsonobject.toString()));
+                            break;
                         }
                     }
                 }
-            } else {
-                System.out.println("Client发送Command为NULL");
             }
         }
         // 若为web-"monitor"
@@ -199,11 +200,39 @@ public class WebSocketHandler extends TextWebSocketHandler {
                         screenshotSessionMap.put(message.getData(), corrMonitorList);
                         stopMonitoring(message);
                     }
-                    case COMMAND_LOCK_SCREEN -> {
-                        String clientId = selcetSessionMap.get(session.getId());
-                        Map<String, WebSocketSession> clientSessionMap = wsSessionMap.get(POOL_NAME_CLIENT);
-                        WebSocketSession clientSession = clientSessionMap.get(clientId);
-                        clientSession.sendMessage(new TextMessage(message.toJson().toString()));
+                    // 返回回放设备列表
+                    case COMMAND_GET_PLAYBACK_DEVICE -> {
+                        List<String> UIDList = screenshotService.getPlayBackDeviceList();
+                        JSONObject UIDJson = new JSONObject();
+                        UIDJson.put(KEY_COMMAND, COMMAND_GET_PLAYBACK_DEVICE);
+                        for (String UID : UIDList) {
+                            UIDJson.put(KEY_DATA, UID);
+                            session.sendMessage(new TextMessage(UIDJson.toString()));
+                        }
+                    }
+                    // 根据选择的UID,返回回放列表
+                    case COMMAND_GET_PLAYBACK_LIST -> {
+                        List<ScreenShot> playBackList = screenshotService.findPlayListByUID(message.getData());
+                        JSONObject playListJson = new JSONObject();
+                        playListJson.put(KEY_COMMAND, COMMAND_GET_PLAYBACK_LIST);
+                        for (ScreenShot screenShot : playBackList) {
+                            playListJson.put("sessionId", screenShot.getSessionId());
+                            playListJson.put("date", screenShot.getDate());
+                            session.sendMessage(new TextMessage(playListJson.toString()));
+                        }
+                    }
+                    // 根据选择的时间对应的SessionId, 返回图片Base64编码
+                    case COMMAND_PLAYBACK -> {
+                        List<String> base64ImageList = screenshotService.getPlayBackImage(message.getData());
+                        JSONObject imageJson = new JSONObject();
+                        imageJson.put("total", base64ImageList.size());
+                        imageJson.put(KEY_COMMAND, COMMAND_PLAYBACK);
+                        for (String base64Image : base64ImageList) {
+                            imageJson.put(KEY_DATA, base64Image);
+                            session.sendMessage(new TextMessage(imageJson.toString()));
+                            // 防止传输过快看不出
+                            Thread.sleep(PLAYBACK_SPEED);
+                        }
                     }
                 }
             }
@@ -361,7 +390,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
      * @param message
      * @throws IOException
      */
-    public void getScreenShot(ClientMessage message, String clientSessionId) throws IOException {
+    public void getScreenShot(ClientMessage message, String clientSessionId, String username) throws IOException {
         List<String> corrMonitorList = screenshotSessionMap.get(clientSessionId);
         if (corrMonitorList == null) {
             System.out.println("无可转发!");
@@ -371,6 +400,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 for (Map.Entry<String, WebSocketSession> entry : monitorSessionMap.entrySet()) {
                     String monitorId = entry.getKey();
                     if (corrMonitorId.equals(monitorId)) {
+                        // 将收到的Base64编码图片存入实体对象中, 再保存到数据库
+                        ScreenShot screenShot = new ScreenShot();
+                        screenShot.setUID(username);
+                        screenShot.setImgBase64(message.getData());
+                        screenShot.setDate(new Timestamp(new Date().getTime()));
+                        screenShot.setSessionId(clientSessionId);
+                        screenshotService.insertScreenshot(screenShot);
+                        // 找到对应的Monitor后转发
                         WebSocketSession monitorSession = entry.getValue();
                         monitorSession.sendMessage(new TextMessage(message.toJson().toString()));
                         break;

@@ -1,13 +1,17 @@
 package cn.edu.whut.androidmonitor;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
+@MapperScan("cn.edu.whut.androidmonitor.mapper")
+@PropertySource("classpath:application-db.properties")
 public class AndroidMonitorApplication {
     
     public static void main(String[] args) {
