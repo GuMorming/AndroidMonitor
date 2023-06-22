@@ -840,6 +840,8 @@ function sleep(second) {
 }
 
 $(function () {
+    username = sessionStorage.getItem("username");
+    $(".username").html(username);
     // 连接区初始化
     initConnectionSector();
     // 数据区
