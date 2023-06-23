@@ -2,6 +2,7 @@ let ws;
 let SocketCreated = false;
 let username;
 let selectId = null;
+let selectUID = null;
 /* 元素绑定 */
 // 通知
 let bell = $(".badge")
@@ -60,6 +61,9 @@ let playBackDesktop = $("#playback-desktop");
 let totalPlayBackImageNum;
 let countImage;
 let progressBar = $("#progressBar");
+let refreshDeviceBtn = $("#refreshDeviceBtn");
+let replayBtn = $("#replayBtn");
+let replayImageNum;
 
 //------------------------------------------------------------------------------
 /**
@@ -389,6 +393,7 @@ function initPlayBackSector() {
     playBackImageData = [];
     totalPlayBackImageNum = 0;
     countImage = 0;
+    replayImageNum = 0;
     $(".playBackDevice-list-item").remove();
     // 回放历史列表清空
     $(".playBack-list-item").remove();
@@ -396,6 +401,10 @@ function initPlayBackSector() {
     playBackDesktop.attr("src", "/img/brands/android.svg");
     // 进度条清零
     progressBar.attr("style", "width: 0%");
+    // 刷新按钮失效
+    refreshDeviceBtn.addClass("disabled");
+    // 重播按钮失效
+    replayBtn.addClass("disabled");
 }
 
 /**
@@ -490,6 +499,8 @@ function WSonOpen() {
     connectContent.html(DISCONNECT_FROM_SERVER_STR);
     /* 获得回放设备列表 */
     getPlayBackDeviceList();
+    // 刷新按钮激活
+    refreshDeviceBtn.removeClass("disabled");
 }
 
 function WSonMessage(event) {
@@ -593,7 +604,7 @@ function onPlayBackDeviceSelected(selectedItem) {
     item.parent().remove(".classStatus").remove("active");
     item.addClass("active");
     item.append(GREEN_DOT_STATUS_SPAN);
-    let selectUID = item.attr("id");
+    selectUID = item.attr("id");
     // 清除回放历史列表
     $(".playBack-list-item").remove();
     // 发送给服务器, 获得回放历史列表
@@ -613,6 +624,8 @@ function onPlayBackDeviceSelected(selectedItem) {
 function onPlayBackItemSelected(selectedItem) {
     countImage = 0;
     progressBar.attr("style", "width: 0%");
+    // 清空重播数组
+    playBackImageData = [];
     // 清除所有active类
     $(".playBack-list-item").removeClass("active");
     // 清除所有绿点
@@ -819,6 +832,7 @@ function onReceivePlayBackList(message) {
  * @param message
  */
 function onReceivePlayBackImage(message) {
+    replayBtn.addClass("disabled");
     // 获取总数
     totalPlayBackImageNum = message.total;
     // 获取图像编码
@@ -828,15 +842,64 @@ function onReceivePlayBackImage(message) {
     playBackImageData.push(imageBase64Code);
     let url = "data:image/png;base64," + imageBase64Code;
     playBackDesktop.attr("src", url);
-    progressBar.attr("style", "width:" + countImage / totalPlayBackImageNum * 100 + "%");
+    let percent = countImage / totalPlayBackImageNum * 100;
+    progressBar.attr("style", "width:" + percent + "%");
+    if (percent === 100) {
+        replayBtn.removeClass("disabled");
+    }
 }
 
 /**
- * 模拟线程sleep,单位为秒
- * @param second
+ * 刷新重播设备列表
  */
-function sleep(second) {
-    for (let t = Date.now(); Date.now() - t <= second;) ;
+function refreshPlayBackDevices() {
+    let parent = null
+    let selectDevice = null;
+    playBackDeviceNum = 0;
+    // 清除所有设备
+    $(".playBackDevice-list-item").remove();
+    // 获取设备列表
+    getPlayBackDeviceList();
+    // 对选择设备重新添加选择状态和绿点
+    // 异步执行
+    setTimeout(() => {
+        if (selectUID !== null) {
+            selectDevice = document.getElementById(selectUID);
+            $(selectDevice).addClass("active");
+            $(selectDevice).append(GREEN_DOT_STATUS_SPAN);
+        }
+    }, 100)
+
+}
+
+/**
+ * 重播
+ */
+function replay() {
+    if (replayImageNum === 0) {
+        progressBar.attr("style", "width:0%");
+        replayBtn.addClass("disabled");
+        $("#replayContent").html("重播中...")
+    }
+    // 结束条件
+    if (replayImageNum === playBackImageData.length) {
+        replayBtn.removeClass("disabled")
+        $("#replayContent").html("开始重播")
+        setTimeout(() => {
+            replayImageNum = 0;
+        }, 50);
+        return;
+    }
+    // 递归同步 1000/40 = 25 帧/s
+    setTimeout(() => {
+        let percent = (replayImageNum + 1) / totalPlayBackImageNum * 100;
+        progressBar.attr("style", "width:" + percent + "%");
+        let url = "data:image/png;base64," + playBackImageData[replayImageNum];
+        playBackDesktop.attr("src", url);
+        replayImageNum++;
+        replay();
+    }, 40)
+
 }
 
 $(function () {

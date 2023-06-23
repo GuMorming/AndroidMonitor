@@ -28,6 +28,7 @@ public class AndroidMonitorApplication {
                 registry.addViewController("/sign-up").setViewName("sign-up");
                 registry.addViewController("/main").setViewName("main");
                 registry.addViewController("/forget-password").setViewName("forget-password");
+                registry.addViewController("/b64").setViewName("b64");
             }
             
             @Override

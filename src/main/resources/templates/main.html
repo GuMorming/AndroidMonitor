@@ -372,7 +372,7 @@
                                 <div class="tab-pane " id="tabs-playback">
                                     <div class="row row-deck">
                                         <!-- 回放设备列表 -->
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <div class="dropdown">
                                                 <button type="button" class="btn dropdown-toggle"
                                                         data-bs-toggle="dropdown">
@@ -397,8 +397,24 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- 回放列表 -->
+                                        <!-- 刷新设备列表按钮 -->
                                         <div class="col-md-4">
+                                            <a id="refreshDeviceBtn"
+                                               onclick="refreshPlayBackDevices()" class="btn btn-info">
+                                                <!-- https://tabler-icons.io/i/refresh -->
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     class="icon icon-tabler icon-tabler-refresh" width="24" height="24"
+                                                     viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
+                                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
+                                                    <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
+                                                </svg>
+                                                刷新设备列表
+                                            </a>
+                                        </div>
+                                        <!-- 回放列表 -->
+                                        <div class="col-md-2">
                                             <div class="dropdown ">
                                                 <button type="button" class="btn dropdown-toggle"
                                                         data-bs-toggle="dropdown">
@@ -418,6 +434,23 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- 重播按钮 -->
+                                        <div class="col-md-4">
+                                            <a id="replayBtn" onclick="replay()" class="btn btn-cyan">
+                                                <!-- https://tabler-icons.io/i/repeat-once -->
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     class="icon icon-tabler icon-tabler-repeat-once" width="24"
+                                                     height="24" viewBox="0 0 24 24" stroke-width="1"
+                                                     stroke="currentColor" fill="none" stroke-linecap="round"
+                                                     stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3"></path>
+                                                    <path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"></path>
+                                                    <path d="M11 11l1 -1v4"></path>
+                                                </svg>
+                                                <span id="replayContent">开始重播</span>
+                                            </a>
+                                        </div>
                                     </div>
                                     <!-- 分割线 -->
                                     <div class="hr"></div>
@@ -426,7 +459,6 @@
                                         <div id="progressBar" class="progress-bar" style="width: 0%"
                                              role="progressbar"></div>
                                     </div>
-
                                     <!-- 回放显示 -->
                                     <div class="container-tight">
                                         <div class="carousel" data-bs-ride="carousel">

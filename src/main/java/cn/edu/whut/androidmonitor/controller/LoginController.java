@@ -22,7 +22,7 @@ public class LoginController {
     @PostMapping("login")
     public String login(User user) {
         if (userService.login(user)) {
-            return "main";
+            return "redirect:main";
         }
         return "error/user-not-exist";
     }
