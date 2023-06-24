@@ -9,15 +9,14 @@ spring:
     url: ${jdbc.url}
     username: ${jdbc.username}
     password: ${jdbc.password}
+  thymeleaf:
+    cache: false
+
+
+
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: cn.edu.whut.androidmonitor.entity
   configuration:
     map-underscore-to-camel-case: true
-
-
-pebble:
-  #默认为".peb" 改为""
-  suffix: ".html"
-  cache: false

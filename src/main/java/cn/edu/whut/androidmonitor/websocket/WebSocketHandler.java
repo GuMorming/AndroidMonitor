@@ -234,6 +234,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
                             Thread.sleep(PLAYBACK_SPEED);
                         }
                     }
+                    // 设定图片质量
+                    case COMMAND_QUALITY -> {
+                        // 获取所选的ClientSessionId
+                        String clientSessionId = selcetSessionMap.get(session.getId());
+                        // 获取Client池
+                        Map<String, WebSocketSession> clientSessionMap = wsSessionMap.get(POOL_NAME_CLIENT);
+                        WebSocketSession clientSession = clientSessionMap.get(clientSessionId);
+                        clientSession.sendMessage(new TextMessage(message.toJson().toString()));
+                    }
                 }
             }
         }

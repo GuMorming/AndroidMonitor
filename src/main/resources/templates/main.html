@@ -29,7 +29,7 @@
                 <!--                    <img src="/static/logo-small.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">-->
                 <!--                </a>-->
             </h1>
-            <!-- Header右侧-->
+            <!-- 右侧-->
             <div class="navbar-nav flex-row order-md-last">
                 <div class="navbar-nav flex-row order-md-last">
                     <!-- Github按钮-->
@@ -52,7 +52,9 @@
                     <div class="d-none d-md-flex">
                         <!-- 通知 -->
                         <div class="nav-item dropdown d-none d-md-flex me-3">
-                            <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1"
+                            <a href="#" id="bell" onclick="removeTada(this)" class="nav-link px-0"
+                               data-bs-toggle="dropdown"
+                               tabindex="-1"
                                aria-label="Show notifications">
                                 <!-- https://tabler-icons.io/i/bell -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -62,7 +64,7 @@
                                     <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"/>
                                     <path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
                                 </svg>
-                                <span class="badge bg-red"></span>
+                                <span class="badge bg-red " style="display: none"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
                                 <div class="card">
@@ -70,43 +72,7 @@
                                         <h3 class="card-title">最新消息</h3>
                                     </div>
                                     <!-- 消息列表-->
-                                    <div class="list-group list-group-flush list-group-hoverable ">
-                                        <div class="list-group-item">
-                                            <div class="alert alert-success alert-dismissible" role="alert">
-                                                <div class="d-flex">
-                                                    <div>
-                                                        <!-- https://tabler-icons.io/i/check -->
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                             class="icon icon-tabler icon-tabler-check" width="24"
-                                                             height="24" viewBox="0 0 24 24" stroke-width="1"
-                                                             stroke="currentColor" fill="none" stroke-linecap="round"
-                                                             stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M5 12l5 5l10 -10"></path>
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <h4 class="alert-title">Wow! Everything worked!</h4>
-                                                        <div class="text-muted">Your account has been saved!</div>
-                                                    </div>
-                                                </div>
-                                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                                            </div>
-                                        </div>
-                                        <!--   example 1-->
-                                        <div class="list-group-item ">
-                                            <div class="row align-items-center">
-                                                <div class="col-auto"><span
-                                                        class="status-dot status-dot-animated bg-red d-block"></span>
-                                                </div>
-                                                <div class="col text-truncate">
-                                                    <a href="#" class="text-body d-block">Example 1</a>
-                                                    <div class="d-block text-muted text-truncate mt-n1">
-                                                        Change deprecated html tags to text decoration classes (#29604)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div id="alertGroup" class="list-group list-group-flush list-group-hoverable ">
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +80,7 @@
                     </div>
                     <!-- Profile-->
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
+                        <a href="#" class="hover nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                            aria-label="Open user menu">
                             <!-- user-star.svg -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-star"
@@ -125,17 +91,50 @@
                                 <path d="M6 21v-2a4 4 0 0 1 4 -4h.5"></path>
                                 <path d="M17.8 20.817l-2.172 1.138a.392 .392 0 0 1 -.568 -.41l.415 -2.411l-1.757 -1.707a.389 .389 0 0 1 .217 -.665l2.428 -.352l1.086 -2.193a.392 .392 0 0 1 .702 0l1.086 2.193l2.428 .352a.39 .39 0 0 1 .217 .665l-1.757 1.707l.414 2.41a.39 .39 0 0 1 -.567 .411l-2.172 -1.138z"></path>
                             </svg>
-                            <div class="d-none d-xl-block ps-2">
+                            <div class=" d-none d-xl-block ps-2">
                                 <div class="username fst-italic" id="username">Monitor Username</div>
                                 <div class="mt-1 small text-muted fst-italic">Monitor</div>
                             </div>
                         </a>
                         <!-- 下拉菜单 -->
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="./profile.html" class="dropdown-item">Profile</a>
-                            <div class="dropdown-divider"></div> <!-- 分割线 -->
-                            <a href="./settings.html" class="dropdown-item">Settings</a>
-                            <a href="index.html" class="dropdown-item">Logout</a>
+                            <a href="./profile" class="dropdown-item">
+                                <!-- https://tabler-icons.io/i/user-circle -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                    <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                    <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"></path>
+                                </svg>
+                                账户详情
+                            </a>
+                            <!-- 分割线 -->
+                            <div class="dropdown-divider"></div>
+                            <a href="./settings" class="dropdown-item">
+                                <!-- https://tabler-icons.io/i/settings -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                                    <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                </svg>
+                                设置
+                            </a>
+                            <a href="/" class="dropdown-item">
+                                <!-- https://tabler-icons.io/i/logout -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+                                    <path d="M9 12h12l-3 -3"></path>
+                                    <path d="M18 15l3 -3"></path>
+                                </svg>
+                                退出系统
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -334,7 +333,7 @@
                                                 </a>
                                             </div>
                                             <!-- 保存桌面截图按钮 -->
-                                            <div class="col-2">
+                                            <div class="col-4">
                                                 <a id="saveScreenshotBtn"
                                                    class="btn btn-google disabled col-auto" href="#">
                                                     <!-- https://tabler-icons.io/i/download -->
@@ -353,6 +352,32 @@
                                                     </svg>
                                                     保存当前桌面截图
                                                 </a>
+                                            </div>
+                                            <!-- 清晰度选择条 -->
+                                            <div class="col-6 ">
+                                                <span class="badge badge-outline text-lg-start text-lime">质量:</span>
+                                                <div class="steps disabled">
+                                                    <a href="#screenshotBtn" class="step-item active" quality="20"
+                                                       onclick="setQuality(this)">
+                                                        20%
+                                                    </a>
+                                                    <a href="#screenshotBtn" class="step-item" quality="40"
+                                                       onclick="setQuality(this)">
+                                                        40%
+                                                    </a>
+                                                    <a href="#screenshotBtn" class="step-item" quality="60"
+                                                       onclick="setQuality(this)">
+                                                        60%
+                                                    </a>
+                                                    <a href="#screenshotBtn" class="step-item" quality="80"
+                                                       onclick="setQuality(this)">
+                                                        80%
+                                                    </a>
+                                                    <a href="#screenshotBtn" class="step-item" quality="100"
+                                                       onclick="setQuality(this)">
+                                                        100%
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -517,7 +542,6 @@
 </div>
 <!-- Tabler Core -->
 <script src="/js/tabler.js" defer></script>
-<script src="/js/demo.js" defer></script>
 <!-- WebSocket Core -->
 <script src="/js/websocket.js" defer></script>
 </body>

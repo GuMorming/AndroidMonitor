@@ -5,7 +5,9 @@ let selectId = null;
 let selectUID = null;
 /* 元素绑定 */
 // 通知
-let bell = $(".badge")
+let bellIcon = $("#bell");
+let badge = $(".badge");
+let alertGroup = $("#alertGroup");
 
 // Web客户端连接
 let connectBtn = $("#connectBtn");
@@ -408,6 +410,74 @@ function initPlayBackSector() {
 }
 
 /**
+ * 添加通知
+ * @param choice
+ */
+function appendAlert(choice) {
+    let alertTemplate = $(ALERT_TEMPLATE);
+    let alertTemp = null;
+    switch (choice) {
+        case WEBSOCKET_OPEN:
+            alertGroup.prepend(alertTemplate);
+            alertTemp = appendDetails(choice);
+            alertTemp.addClass("alert-success");
+            break;
+        case WEBSOCKET_CLOSED:
+            alertGroup.prepend(alertTemplate);
+            alertTemp = appendDetails(choice);
+            alertTemp.addClass("alert-danger");
+            break;
+    }
+}
+
+function appendDetails(choice) {
+    let alertTemp = $($("[role='alert']")[0]);
+
+    let alertIconDiv = $(".alertIcon");
+    alertIconDiv.attr("class", "alertIconDone");
+    alertTemp.append(alertIconDiv);
+
+    let alertContentDiv = $(".alertContent");
+
+    alertContentDiv.append("<div class=\"text-muted text-nowrap\">" + getTime(new Date()) + "<\div>");
+    alertContentDiv.attr("class", "alertContentDone");
+    alertTemp.append(alertContentDiv);
+
+    bellIcon.addClass("icon-tada");
+    badge.show();
+
+    switch (choice) {
+        case WEBSOCKET_OPEN:
+            alertIconDiv.prepend(CHECK_SVG);
+            alertContentDiv.prepend(CONNECT_SUCCESS_ALERT_H4);
+            break;
+        case WEBSOCKET_CLOSED:
+            alertIconDiv.prepend(ALERT_CIRCLE_SVG);
+            alertContentDiv.prepend(DISCONNECT_ALERT_H4);
+            break;
+    }
+
+
+    return alertTemp;
+}
+
+/**
+ * 通知按钮动画效果去除
+ * @param bell
+ */
+function removeTada(bell) {
+    badge.hide()
+    let bellIcon = $(bell);
+    bellIcon.removeClass("icon-tada");
+}
+
+function removeClickedAlert(item) {
+    let parents = $(item).parents();
+    console.log(parents);
+
+}
+
+/**
  * 连接webSocket与断开
  */
 function toggleConnectionClicked() {
@@ -492,6 +562,8 @@ function toggleScreenshot() {
 }
 
 function WSonOpen() {
+    // 连接成功Alert
+    appendAlert(WEBSOCKET_OPEN);
     /* 修改连接按钮 */
     connectSpinner.hide();
     plugOffSvg.show();
@@ -546,6 +618,8 @@ function WSonMessage(event) {
 }
 
 function WSonClose() {
+    // 断开连接Alert
+    appendAlert(WEBSOCKET_CLOSED);
     //连接区初始化
     initConnectionSector();
     // 数据区初始化
@@ -574,6 +648,7 @@ function onClientItemSelected(selectedItem) {
         $(".client-list-item").removeClass("active");
         // 清除所有绿点
         $(".clientStatus").remove();
+        // 转换为jQuery对象
         let item = $(selectedItem);
         item.parent().remove(".classStatus").remove("active");
         // 为选择设备添加选择状态和绿点
@@ -588,6 +663,21 @@ function onClientItemSelected(selectedItem) {
             'data': selectId
         });
         ws.send(msg);
+        // 发送图片质量设定
+        let stepItem = $(".step-item.active");
+        console.log(stepItem);
+        let quality = stepItem.attr("quality");
+        // 发送给服务器, 设定图片质量
+        setTimeout(() => {
+            const msg = JSON.stringify({
+                'command': 'quality',
+                'poolName': POOL_NAME,
+                'username': username,
+                'data': quality
+            });
+            ws.send(msg);
+        }, 500);
+
     }
 }
 
@@ -702,6 +792,27 @@ function onReceiveBitmap(message) {
         .attr("href", url)
         .attr("download", "desktopImg" + new Date().valueOf())
         .removeClass("disabled");
+}
+
+/**
+ * 设定传输图片质量
+ * @param item
+ */
+function setQuality(item) {
+    $(".step-item").removeClass("active");
+    let stepItem = $(item);
+    stepItem.addClass("active");
+    let quality = stepItem.attr("quality");
+    if (ws.readyState === WEBSOCKET_OPEN && selectId !== null) {
+        // 发送给服务器, 设定图片质量
+        const msg = JSON.stringify({
+            'command': 'quality',
+            'poolName': POOL_NAME,
+            'username': username,
+            'data': quality
+        });
+        ws.send(msg);
+    }
 }
 
 /**
@@ -913,4 +1024,11 @@ $(function () {
     initDesktopSector();
     // 初始化回放区
     initPlayBackSector();
+    // AlertRemove
+    $("#alertGroup").on("mouseenter", ".row", function () {
+        $(this).click(function () {
+            $(this).parent().remove()
+            console.log(this)
+        })
+    })
 })

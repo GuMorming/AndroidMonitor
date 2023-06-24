@@ -26,4 +26,13 @@ public class LoginController {
         }
         return "error/user-not-exist";
     }
+    
+    @PostMapping("/register")
+    public String register(User user) {
+        if (userService.register(user)) {
+            return "main";
+        } else {
+            return "sign-up";
+        }
+    }
 }

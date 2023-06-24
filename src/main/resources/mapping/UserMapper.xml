@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.whut.androidmonitor.mapper.UserMapper">
 
-    <insert id="insertUser" parameterType="cn.edu.whut.androidmonitor.entity.User">
+    <insert id="insertUser" parameterType="User">
         insert into user(username, password)
         values (#{username}, #{password})
     </insert>
 
-    <select id="isExist" parameterType="cn.edu.whut.androidmonitor.entity.User"
+    <select id="isExist" parameterType="User"
             resultType="cn.edu.whut.androidmonitor.entity.User">
         select *
         from user
