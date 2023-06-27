@@ -230,7 +230,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                         for (String base64Image : base64ImageList) {
                             imageJson.put(KEY_DATA, base64Image);
                             session.sendMessage(new TextMessage(imageJson.toString()));
-                            // 防止传输过快看不出
+                            // 防止传输过快, 肉眼反应不及
                             Thread.sleep(PLAYBACK_SPEED);
                         }
                     }
@@ -299,7 +299,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
      *
      * @param message
      * @throws IOException
-     * @attention: 目前为遍历发送, 后期应更正为点对点
      */
     public void startMonitoring(MonitorMessage message) throws IOException {
         Map<String, WebSocketSession> clientSessionMap = wsSessionMap.get(POOL_NAME_CLIENT);
@@ -328,7 +327,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
      *
      * @param message
      * @throws IOException
-     * @attention: 目前为遍历发送, 后期应更正为点对点
      */
     public void stopMonitoring(MonitorMessage message) throws IOException {
         Map<String, WebSocketSession> clientSessionMap = wsSessionMap.get(POOL_NAME_CLIENT);
@@ -378,8 +376,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
     
     /**
      * Web-Monitor发送给Android-Client问候消息
-     *
-     * @param message
      */
     public void sendGreetingToClients(MonitorMessage message) throws IOException {
         Map<String, WebSocketSession> clientSessionMap = wsSessionMap.get(POOL_NAME_CLIENT);
@@ -395,9 +391,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
     
     /**
      * 从Android-client获取截图数据, 转发给对应Web-Monitor
-     *
-     * @param message
-     * @throws IOException
      */
     public void getScreenShot(ClientMessage message, String clientSessionId, String username) throws IOException {
         List<String> corrMonitorList = screenshotSessionMap.get(clientSessionId);
@@ -444,7 +437,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
     /**
      * 仅AndroidClient, 从sessionHeader中获取用户名称
      *
-     * @param headers
      * @return String username
      */
     private String getUsernameFromSessionHeaders(HttpHeaders headers) {

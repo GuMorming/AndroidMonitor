@@ -964,7 +964,6 @@ function onReceivePlayBackImage(message) {
  * 刷新重播设备列表
  */
 function refreshPlayBackDevices() {
-    let parent = null
     let selectDevice = null;
     playBackDeviceNum = 0;
     // 清除所有设备
@@ -1010,7 +1009,6 @@ function replay() {
         replayImageNum++;
         replay();
     }, 40)
-
 }
 
 $(function () {

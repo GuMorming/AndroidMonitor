@@ -28,6 +28,7 @@ public class MessageKey {
     public static final String COMMAND_GET_PLAYBACK_LIST = "playBackList";
     public static final String COMMAND_PLAYBACK = "playBack";
     public static final String COMMAND_QUALITY = "quality";
+    // 1/25 = 0.04s = 40ms
     public static final int PLAYBACK_SPEED = 40;
     // Android离线推送命令
     public static final String COMMAND_LEAVE = "leave";
