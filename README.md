@@ -3,6 +3,7 @@
 ## 目录
 
 - [背景](#背景及技术要求)
+- [环境说明](#环境说明)
 - [功能模块](#功能模块)
     - [1.登录](#1-登录)
     - [2.数据采集](#2-数据采集)
@@ -21,6 +22,20 @@
 
 基于WebSocket进行网络通信，PC端Web程序通过网络监控Android手机界面实时运行状态，
 实时采集Android手机的界面信息和设备运行状态，根据功能将必要信息进行存储。
+
+## 环境说明
+
+1. Web系统开发:
+
+- 开发工具: IntelliJ IDEA 2022.3.3
+- 运行环境: Oracle OpenJDK version 17.0.1
+- 主要依赖: SpringBoot 3.1.0, SpringBoot WebSocket MySQL 8.0.30
+
+2. Android app开发:
+
+- 开发工具: Android Studio Flamingo | 2022.2.1
+- 运行环境: Oracle OpenJDK version 1.8.0_271, Android Gradle Plugin version 3.6.3, Gradle version 5.6.4
+- 依赖: org.java-websocket:Java-WebSocket:1.5.3
 
 ## 功能模块
 
